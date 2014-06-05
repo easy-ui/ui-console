@@ -1,6 +1,6 @@
 {
   "name": "uiconsole",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Web developer tools for testing, scripting and debugging on remote devices.",
     "author": "easy-ui <npm.uiconsole@gmail.com>",
   "homepage": "https://github.com/easy-ui/ui-console",
@@ -41,5 +41,8 @@
     },
     "bugs": {
         "url": "https://github.com/easy-ui/ui-console/issues"
+    },
+    "twitter": {
+        "url": "https://twitter.com/easyui1"
     }
 }
