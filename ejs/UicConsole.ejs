@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>UIConsole :: <%- userName %></title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css"/>
+    <style>
+        pre {margin: 10px 0 20px 0;}
+        pre:hover{background: #00a3ff; color: #ffffff;cursor: pointer;}
+        legend{font-size: 20px; font-weight: bold;}
+        #cmd{overflow: auto;}
+        .console{
+            height: 360px;
+            overflow: auto;
+            background-color: #F5F5F5;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            color: #333333;
+        }
+        .list-group-item img{margin: 2px 5px 2px 2px; padding: 0;}
+        #console-log{height: 230px;margin: 20px 0 0;overflow: auto;}
+        #browserList .mix{ display: none;}
+        #browserList .blist{margin: 0px;}
+        .navbar {
+            border-radius: 0px;
+        }
+        .container p{
+            color: #000000;
+            font-size: 10px;
+        }
+        #browserListPanel{display: none;}
+    </style>
+</head>
+<body>
+
+<div class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">UIConsole</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">UICore <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="http://uicore1.m2msolution.dev/" target="_blank">UICore1</a></li>
+                        <li><a href="http://uicore2.m2msolution.dev/" target="_blank">UICore2</a></li>
+                        <li><a href="http://uicore3.m2msolution.dev/" target="_blank">UICore3</a></li>
+                        <li class="divider"></li>
+                        <li><a href="https://intwo-dev.m2msolution.dev/" target="_blank">UICore DEV</a></li>
+                        <li><a href="https://intwo-inte.m2msolution.com/" target="_blank">UICore INTE</a></li>
+                        <li><a href="http://intwo-demo.m2msolution.com/" target="_blank">UICore DEMO</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!--
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            -->
+
+            <ul class="nav navbar-nav navbar-right">
+                <a href="/logout/" class="btn btn-danger navbar-btn"><span class="glyphicon glyphicon-remove"></span> Logout</a>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="http://jquery.com/" target="_blank">JQuery</a></li>
+                        <li><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></li>
+                        <li><a href="http://nodejs.org/" target="_blank">Node.js</a></li>
+                        <li><a href="http://socket.io/" target="_blank">Socket.io</a></li>
+                        <li><a href="http://html2canvas.hertzen.com/documentation.html" target="_blank">HTML2Canvas</a></li>
+                        <li><a href="http://people.apache.org/~pmuellr/weinre/docs/latest/Home.html" target="_blank">Weinre</a></li>
+                        <li><a href="https://mixitup.kunkalabs.com/" target="_blank">Mixitup</a></li>
+                        <li><a href="http://imsky.github.io/holder/" target="_blank">Holder</a></li>
+                        <li><a href="https://github.com/substack/tape" target="_blank">Tape</a></li>
+                        <li><a href="https://www.npmjs.org/package/testling" target="_blank">Testling</a></li>
+                        <li><a href="https://www.npmjs.org/package/browserify" target="_blank">Browserify</a></li>
+                        <li class="divider"></li>
+                        <li><a href="http://expressjs.com" target="_blank">expressjs</a></li>
+                        <li><a href="https://github.com/visionmedia/express/tree/master/examples" target="_blank">express examples</a></li>
+                        <li><a href="https://github.com/mapbox/node-sqlite3" target="_blank">sqlite3</a></li>
+                        <li><a href="http://embeddedjs.com/index.html" target="_blank">ejs</a></li>
+                        <li><a href="http://runnable.com" target="_blank">runnable</a></li>
+                        <li class="divider"></li>
+                        <li><a href="http://www.saseo.fr" target="_blank">Saseo</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</div>
+
+<div class="container">
+    <div class="alert alert-success">
+        <p><span class="glyphicon glyphicon-user"></span> <%- userName %></p>
+        <p><span class="glyphicon glyphicon-time"></span> Last connection : <%- lastConnected %></p>
+    </div>
+
+    <div class="row">
+
+        <div id="browserListPanel" class="col-xs-6 col-md-3">
+
+            <h3>Filter</h3>
+            <div class="btn-group">
+                <div class="btn btn-info filter" data-filter="all">all</div>
+                <div class="btn btn-info filter" data-filter=".undefined">PC</div>
+                <div class="btn btn-info filter" data-filter=".tablet">Tablet</div>
+                <div class="btn btn-info filter" data-filter=".mobile">Mobile</div>
+            </div>
+
+            <h3>Order</h3>
+            <div class="btn-group">
+                <div class="btn btn-info sort" data-sort="browser:asc"><div style="font-size: 10px;">Browser</div> <span class="glyphicon glyphicon-chevron-up"></span></div>
+                <div class="btn btn-info sort" data-sort="browser:desc"><div style="font-size: 10px;">Browser</div> <span class="glyphicon glyphicon-chevron-down"></span></div>
+            </div>
+
+            <div class="btn-group">
+                <div class="btn btn-info sort" data-sort="os:asc"><div style="font-size: 10px;">OS</div> <span class="glyphicon glyphicon-chevron-up"></span></div>
+                <div class="btn btn-info sort" data-sort="os:desc"><div style="font-size: 10px;">OS</div> <span class="glyphicon glyphicon-chevron-down"></span></div>
+            </div>
+
+            <div class="btn-group">
+                <div class="btn btn-info sort" data-sort="device:asc"><div style="font-size: 10px;">&nbsp;Device</div> <span class="glyphicon glyphicon-chevron-up"></span></div>
+                <div class="btn btn-info sort" data-sort="device:desc"><div style="font-size: 10px;">&nbsp;Device</div> <span class="glyphicon glyphicon-chevron-down"></span></div>
+            </div>
+
+            <div class="btn-group">
+                <div class="btn btn-info sort" data-sort="my-order:asc"><span class="glyphicon glyphicon-chevron-up"></span></div>
+                <div class="btn btn-info sort" data-sort="my-order:desc"><span class="glyphicon glyphicon-chevron-down"></span></div>
+            </div>
+
+            <h3>Connected</h3>
+            <div id="browserList"></div>
+
+            <div id="btn-senstoall" class="btn btn-success" style="margin: 20px 0 0 0;">Run on all devices <span class="glyphicon glyphicon-play"></span></div>
+
+        </div>
+
+        <div id="main-console" class="col-xs-12 col-sm-6 col-md-8">
+
+            <div class="console">
+
+                <div class="navbar navbar-default" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#console-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">JS Console</a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="console-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="" id="start-weinre">Weinre</a></li>
+                                <li><a href="" id="btn-firebuglite">Firebug</a></li>
+                                <!--
+                                <li><a href="" id="btn-addEventReporter">Reporter</a></li>
+                                <li><a href="" id="btn-gethandler">Getreport</a></li>
+                                -->
+                                <li><a href="" id="btn-tape">TAPE</a></li>
+                                <li><a href="" id="btn-gremlins">Gremlins</a></li>
+                                <li><a href="" id="btn-screenshot">Screenshot</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" class="form-control" id="console" placeholder="JS Console" data-provide="typeahead">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" id="btn-console">Run!</button>
+                    </span>
+                </div>
+                <div id="console-log" class="form-control"></div>
+            </div>
+
+            <!-- Caroussel -->
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+
+                    <div class="item active">
+                        <img data-src="holder.js/300x200">
+                        <div class="carousel-caption">
+                            UIConsole
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Controls -->
+                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+            <!-- Caroussel -->
+
+            <div id="cmd"></div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-1.8.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap3-typeahead.min.js"></script>
+<script src="js/jquery.mixitup.js"></script>
+<script src="js/ua-parser.js"></script>
+<script src="js/holder.js"></script>
+
+<script src="https://192.168.2.136/socket.io/socket.io.js"></script>
+<script>
+// TTS see : http://www.masswerk.at/mespeak/
+
+// Multi touch : http://rawgit.com/EightMedia/hammer.js/master/tests/manual/events.html
+// https://github.com/EightMedia/hammer.js/tree/1.1.2/
+    if(typeof io != 'undefined'){
+        var socket = io.connect('https://192.168.2.136');
+    }
+
+    var parser = new UAParser();
+    var current_socketid = null;
+    var _PROTOCOL = 'https';
+    var _WEINRE_PROTOCOL = 'http';
+    var _HOST = '192.168.2.136';
+    var _WEINRE_PORT = '8282';
+    var _CONSOLE_LOG_COUNTER = 0;
+    var _CONSOLE_LOG_COUNTER_MAX = 8;
+    var aLog = [];
+    var _CONSOLE_LOG_TIMER = 5000;
+
+    var recent_commands = [
+        "alert(\"\");",
+        "$('')",
+        "console.log('');",
+        "console.info('');",
+        "console.debug('');",
+        "console.dir('');",
+        "$('').addClass('');",
+        "$('').after('');",
+        "$('').append('');",
+        "$('').appendTo('');",
+        "$('').attr('');",
+        "$('').before('');",
+        "$('').change();",
+        "$('').click();",
+        "$('').clone('');",
+        "$('').css('', '');",
+        "$('').dblclick();",
+        "$('').detach('');",
+        "$('').empty();",
+        "$('').fadeIn();",
+        "$('').fadeOut();",
+        "$('').fadeTo('slow', 0.5);",
+        "$('').fadeToggle();",
+        "$('').height();",
+        "$('').hide();",
+        "$('').html('');",
+        "$('').innerHeight();",
+        "$('').innerWidth();",
+        "$('').insertAfter('');",
+        "$('').insertBefore('');",
+        "$('').offset();",
+        "$('').outerHeight();",
+        "$('').outerWidth();",
+        "$('').position();",
+        "$('').prepend('');",
+        "$('').prependTo('');",
+        "$('').prop('');",
+        "$('').remove();",
+        "$('').removeAttr('');",
+        "$('').removeClass('');",
+        "$('').removeProp();",
+        "$('').replaceAll('');",
+        "$('').replaceWith('');",
+        "$('').scrollLeft();",
+        "$('').scrollTop();",
+        "$('').serialize();",
+        "$('').serializeArray();",
+        "$('').show();",
+        "$('').size();",
+        "$('').slideDown();",
+        "$('').slideToggle();",
+        "$('').slideUp();",
+        "$('').stop();",
+        "$('').submit();",
+        "$('').text('');",
+        "$('').toArray();",
+        "$('').toggle();",
+        "$('').toggleClass('');",
+        "$('').trigger('');",
+        "$('').unwrap();",
+        "$('').val('');",
+        "$('').width();",
+        "$('').wrap('');",
+        "$('').wrapAll('');",
+        "$('').wrapInner('');"
+    ];
+
+    var substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+            var matches, substringRegex;
+
+            // an array that will be populated with substring matches
+            matches = [];
+
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+                if (substrRegex.test(str)) {
+                    // the typeahead jQuery plugin expects suggestions to a
+                    // JavaScript object, refer to typeahead docs for more info
+                    matches.push({ value: str });
+                }
+            });
+
+            cb(matches);
+        };
+    };
+
+    var imgMap = function(prop, key, arr){
+        var url = 'images/undefined.png';
+        for(var i in arr){
+            if(arr.hasOwnProperty(i)){
+                var isobj = typeof arr[i] === 'object';
+                var r = isobj ? new RegExp(arr[i][0], 'i') : new RegExp(arr[i], 'i');
+                if(r.test(prop[key])){
+                    url = 'images/'+(isobj?arr[i][1]:arr[i])+'.png';
+                    return '<img src="'+url+'" width="16">';
+                } else if(prop[key] !== undefined){
+                    url = 'images/check.png';
+                }
+            }
+        }
+        return '<img src="'+url+'"  width="16">';
+    };
+
+    var tpl = '';
+        tpl += '<fieldset>';
+            tpl += '<legend>{title}</legend>';
+            tpl += '<pre class="jscode">{js}</pre>';
+        tpl += '</fieldset>';
+
+       var $cmd = $("#cmd");
+       var $console = $(".console");
+       var $browserList = $("#browserList");
+
+
+            $cmd.append(addTest(tpl,'Refresh', 'window.location.reload();'));
+            $cmd.append('<hr>');
+            $cmd.append(addTest(tpl,'Get Event Handler', 'var msg = new SpeechSynthesisUtterance(\'Hello World\');window.speechSynthesis.speak(msg);'));
+            $cmd.append('<hr>');
+            $cmd.append(addTest(tpl,'Login', '$("#authentication-panel-form-login").val("Testdev0008");\n$("#authentication-panel-form-password").val("Testdev0008");\n$("#authentication-panel-pinksquare").trigger("click");'));
+            $cmd.append('<hr>');
+            $cmd.append(addTest(tpl,'Mode Partiel', '$(".dashboard-security-alarm-choice-custom").trigger("click");'));
+            $cmd.append(addTest(tpl,'Mode Total', '$(".dashboard-security-alarm-choice-on").trigger("click");'));
+            $cmd.append(addTest(tpl,'Mode OFF', '$(".dashboard-security-alarm-choice-off").trigger("click");'));
+            $cmd.append(addTest(tpl,'Start Video', '$("#dashboard-player-button-play").trigger("click");'));
+            $cmd.append(addTest(tpl,'Stop Video', '$("#camera-player-gprs-stop").trigger("click");'));
+            $cmd.append('<hr>');
+            $cmd.append(addTest(tpl,'Security',     '$("#header-security").trigger("click");'));
+            $cmd.append(addTest(tpl,'Camera',       '$("#header-camera").trigger("click");'));
+            $cmd.append(addTest(tpl,'Domotic',      '$("#header-domotic").trigger("click");'));
+            $cmd.append(addTest(tpl,'Scenario',     '$("#header-scenario").trigger("click");'));
+            $cmd.append(addTest(tpl,'history',      '$("#header-history").trigger("click");'));
+            $cmd.append(addTest(tpl,'Setting',      '$("#header-setting").trigger("click");'));
+            $cmd.append(addTest(tpl,'Profile',      '$("#header-profile").trigger("click");'));
+            $cmd.append('<hr>');
+            $cmd.append(addTest(tpl,'Logout', '$("#header-status-infos-logout").trigger("click");$(".modal-buttons-ok").trigger("click");'));
+            $cmd.append('<hr>');
+            //$cmd.append(addTest(tpl,'', ''));
+            $cmd.hide();
+            $console.hide();
+
+// ---------------------------------------------------------------------------------------------------------------------
+// FUNCTION ------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+    function addTest(tpl,title,js){
+
+        var template = replaceAll("{title}", title, tpl);
+            template = replaceAll("{js}", js, template);
+
+        return template;
+    };
+
+    function populateBrowserList(data){
+
+        $("#browserList").empty();
+        var index = 0;
+        var bCurrentSocketID = false;
+
+        for(var k in data.list){
+
+            //console.log(k);
+            //console.info(data.list[k]);
+
+            parser.setUA(data.list[k].data);
+
+            var domainOrigin = data.list[k].origin;
+            var connectionTime = data.list[k].time;
+
+            var browser = parser.getBrowser();
+            var engine = parser.getEngine();
+            var os = parser.getOS();
+            var device = parser.getDevice();
+            console.log(device);
+            index++;
+
+            // On test si il y a deja un 'current_socketid'
+            // Si oui on regarde si il est dans la liste
+            // Si oui rien
+            // Si non alors le client est deco on masque la console
+            if(current_socketid!=null){
+                if(current_socketid==k){
+                    bCurrentSocketID=true;
+                }
+            }
+
+            var html ='';
+
+            html += '<div class="mix '+device.type+' list-group-item" data-id="'+k+'" data-my-order="'+index+'" data-browser="'+browser.name+'" data-os="'+os.name+'" data-device="'+device.type+'">';
+                html += '<div style="display: block; height: 20px;">';
+                    //html += '<div style="text-overflow: ellipsis; width: 150px;">'+connectionTime+'</div>';
+                    html += '<span class="label label-primary pull-left">'+domainOrigin+'</span>';
+                html += '</div>';
+                html += '<div style="display: block;">';
+
+                    html += '<div class="blist">';
+                        html += imgMap(browser, 'name', ['ie', 'chrome', 'chromium', 'konqueror', 'safari', 'opera', 'firefox', ['fennec', 'firefox'], 'mozilla', 'midori', 'arora', 'camino', 'iceweasel', 'dolfin', 'rockmelt', 'flock']);
+                        html += '<div class="label label-info">'+browser.version+'</div>';
+                    html += '</div>';
+
+                    html += '<div class="blist">';
+                        html += imgMap(engine, 'name', [['trident', 'ie'], ['webkit', 'safari'], ['khtml', 'konqueror'], ['presto', 'opera'], ['gecko', 'mozilla']]);
+                        html += '<span class="label label-info">'+engine.version+'</span>';
+                    html += '</div>';
+
+                    html += '<div class="blist">';
+                        html += imgMap(os, 'name', ['meego', 'symbian', 'android', 'blackberry', 'bada', ['windows phone os', 'winphone'], 'windows', 'chromium', 'mac', 'freebsd', 'bsd', 'kubuntu', 'xubuntu', 'lubuntu', 'ubuntu', 'gentoo', 'fedora', 'mandriva', 'redhat', 'suse', 'debian', 'slackware', 'arch', 'linux', 'solaris', 'webos', 'ios', 'centos', 'pclinuxos', ['ios', 'mac'], ['rim', 'blackberry']]);
+                        html += '<span class="label label-info">'+os.version+'</span>';
+                    html += '</div>';
+
+                    html += '<div class="blist">';
+                        html += imgMap(device, 'type', [['undefined', 'pc'], ['tablet', 'ipad'], ['mobile', 'phone']]);
+                        html += '<span class="label label-info">--</span>';
+                    html += '</div>';
+
+                    html += '<div style="float:right;margin-top: -35px;">';
+                        html += '<div class="btn btn-success run" data-id="'+k+'" ><span class="glyphicon glyphicon-play"></span></div>';
+                    html += '</div>';
+
+                html += '</div>';
+            html += '';
+            html += '';
+            html += '</div>';
+
+            $("#browserListPanel").css('display', 'block');
+            $("#browserList").append(html);
+        }
+
+        if(!bCurrentSocketID){
+            $("#main-console").hide();
+        } else {
+            $(".list-group-item[data-id=" + current_socketid +"]").css('background-color','#DFF0D8');
+        }
+
+        $('#browserList').mixItUp();
+        $('#browserList').mixItUp('filter', 'all');
+    };
+
+    function replaceAll(str_find, str_replace, str) {
+        if (typeof str != 'undefined')
+            return str.replace(new RegExp(str_find, 'g'), str_replace);
+        else
+            return "";
+    };
+
+    function sendJS(js){
+        if(current_socketid!=null){
+            var data = {socketid:current_socketid, cmd:js};
+            socket.emit('jscmdto', data);
+        } else {
+            socket.emit('jscmd', js);
+        }
+    }
+
+// ---------------------------------------------------------------------------------------------------------------------
+// SOCKET --------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+    if(typeof io != 'undefined') {
+
+        socket.on('connect', function () {
+            console.log('CLIENT socket.on: connect ');
+            console.log(this.socket.sessionid);
+
+            socket.emit('imconsole', {data: this.socket.sessionid});
+            socket.emit('getBrowserList');
+        });
+
+        socket.on('BrowserList', function (data) {
+            console.log('CLIENT socket.on: BrowserList');
+
+            populateBrowserList(data);
+        });
+
+        socket.on('handlers', function (data) {
+            console.log('CLIENT socket.on: handlers');
+            console.log(data);
+
+            var result = JSON.parse(data.data.data);
+            var nbr = result.length;
+            for (var i = 0; i < nbr; i++) {
+                console.log(result[i].tag);
+            }
+        });
+
+        socket.on('screenshot', function (data) {
+            console.log('CLIENT socket.on: screenshot');
+
+            var html = '';
+            html += '<div class="item">';
+            html += '<img src="' + data.data.data + '" width="300" height="200">';
+            html += '<div class="carousel-caption">';
+            html += '<span style="background-color: #000000;color:#ffffff;">' + new Date() + '</span>';
+            html += '</div>';
+            html += '</div>';
+
+            $(".carousel-inner").append(html);
+            $("#carousel-example-generic").show();
+        });
+
+        socket.on('tape', function (data) {
+            console.log('CLIENT socket.on: tap');
+            console.log(data);
+
+            var jsonResult = JSON.parse(data.data.console);
+
+            var html = '';
+                html += '<div class="list-group">';
+
+            if( jsonResult.type == 'test' ){
+
+                html += '<div class="list-group-item active">';
+                    html += '<span class="badge">Test '+jsonResult.id+'</span>';
+                    html += '<p><b>'+jsonResult.name+'</b></p>';
+                html += '</div>';
+
+            } else if( jsonResult.type == 'assert' ){
+
+                var classResult = 'list-group-item-danger';
+
+                if(jsonResult.ok === true){
+                    classResult = 'list-group-item-success';
+                }
+
+                html += '<div class="list-group-item '+classResult+'">';
+                html += '<span class="badge">N°: '+jsonResult.id+'</span>';
+                html += '<p><b>'+jsonResult.name+'</b></p>';
+                html += '<p><b>Operator: </b>'+jsonResult.operator+'</p>';
+                html += '<p><b>Actual: </b>'+jsonResult.actual+'</p>';
+                html += '<p><b>Expected: </b>'+jsonResult.expected+'</p>';
+                html += '</div>';
+
+            } else if( jsonResult.type == 'end' ){
+                /* Nothing */
+            }
+
+            html += '</div>';
+
+            $("#console-log").append(html);
+        });
+    }
+
+// ---------------------------------------------------------------------------------------------------------------------
+// EVENT ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+
+    $("#browserList").on("click", '.run', function (e) {
+        e.preventDefault();
+        
+        var socketid = $(this).attr('data-id');
+        current_socketid = socketid;
+        var data = {socketid:socketid, cmd:"alert(\"CONNECTED !\");"};
+        socket.emit('jscmdto', data);
+        $("#main-console").show();
+        $("#console-log").empty();
+        $(".carousel-inner").empty();
+        $(".carousel-inner").append('<div class="item active"><img data-src="holder.js/300x200"><div class="carousel-caption">UIConsole</div></div>');
+        $cmd.show();
+        $console.show();
+
+        $(".list-group-item").css('background-color','#FFFFFF');
+        $(".list-group-item[data-id=" + socketid +"]").css('background-color','#DFF0D8');
+    });
+
+    $("#cmd").on("click", '.jscode', function (e) {
+        e.preventDefault();
+        sendJS($(this).html());
+    });
+
+    $("#btn-console").on("click", function (e) {
+        e.preventDefault();
+        sendJS($("#console").val());
+
+        var html = '';
+            html += '<div id="cl_'+_CONSOLE_LOG_COUNTER+'" class="_list-group-item">';
+            html += $("#console").val();
+            html += '</div>';
+
+        $("#console-log").append( html );
+        recent_commands.push( $("#console").val() );
+        $("#console").val('').focus();
+
+        aLog.push( _CONSOLE_LOG_COUNTER );
+
+        if(aLog.length >= _CONSOLE_LOG_COUNTER_MAX){
+            var param = aLog[0];
+            var index = aLog.indexOf(param);
+            if (index > -1) {
+                aLog.splice(index, 1);
+            }
+            setTimeout(function(e){
+                $("#cl_"+param).hide('slow');
+            }, _CONSOLE_LOG_TIMER, param);
+        }
+
+        _CONSOLE_LOG_COUNTER++;
+    });
+
+    $("#console").keypress(function(e) {
+        if(e.which == 13) {
+            $("#btn-console").trigger("click");
+        }
+    });
+
+    $("#btn-senstoall").on("click", function (e) {
+        e.preventDefault();
+
+        current_socketid = null;
+        $("#main-console").show();
+        $("#console-log").empty();
+        $(".carousel-inner").empty();
+        $(".carousel-inner").append('<div class="item active"><img data-src="holder.js/300x200"><div class="carousel-caption">UIConsole</div></div>');
+        $cmd.show();
+        $console.show();
+        $(".list-group-item").css('background-color','#FFFFFF');
+        $(".list-group-item").css('background-color','#DFF0D8');
+    });
+
+    $("#btn-firebuglite").on("click", function (e) {
+        e.preventDefault();
+        sendJS("javascript: ( function (F, i, r, e, b, u, g, L, I, T, E) { if (F.getElementById(b)) return; E = F[i + 'NS'] && F.documentElement.namespaceURI; E = E ? F[i + 'NS'](E, 'script') : F[i]('script'); E[r]('id', b); E[r]('src', I + g + T); E[r](b, u); (F[e]('head')[0] || F[e]('body')[0]).appendChild(E); E = new Image; E[r]('src', I + L); } )( document , 'createElement' , 'setAttribute' , 'getElementsByTagName' , 'FirebugLite' , '4' , 'injectlib/firebug-lite.js' , 'images/sprite.png' , '"+_PROTOCOL+"://"+_HOST+"/' , '#startOpened');");
+    });
+
+    $("#btn-gethandler").on("click", function (e) {
+        e.preventDefault();
+        sendJS("socket.emit('handlers', {data: JSON.stringify( $.eventReport() )});");
+    });
+
+    $("#btn-addEventReporter").on("click", function (e) {
+        e.preventDefault();
+        sendJS("var i = document.createElement('script');i.src = '"+_PROTOCOL+"://"+_HOST+"/injectlib/eventReport.js';document.getElementsByTagName('body')[0].appendChild(i);");
+    });
+
+    $("#btn-gremlins").on("click", function (e) {
+        e.preventDefault();
+        sendJS("var i = document.createElement('script');i.src = '"+_PROTOCOL+"://"+_HOST+"/injectlib/gremlins.min.js';document.getElementsByTagName('body')[0].appendChild(i);setTimeout(function(e){gremlins.createHorde().unleash();}, 500);");
+    });
+
+    $("#btn-screenshot").on("click", function (e) {
+        e.preventDefault();
+        var emitScreenshot = "socket.emit('screenshot', {data: d});";
+        sendJS("var i = document.createElement('script');i.src = '"+_PROTOCOL+"://"+_HOST+"/injectlib/html2canvas.js';document.getElementsByTagName('body')[0].appendChild(i);setTimeout(function(e){html2canvas(document.body,{onrendered: function(canvas){canvas.id='cc';var c=canvas;var d=c.toDataURL('image/png');"+emitScreenshot+"}});}, 500);");
+    });
+
+    $("#start-weinre").on("click", function (e) {
+        e.preventDefault();
+        sendJS("var i = document.createElement('script');i.src = '"+_PROTOCOL+"://"+_HOST+":"+_WEINRE_PORT+"/target/target-script-min.js#manu';document.getElementsByTagName('body')[0].appendChild(i);");
+        window.open(""+_WEINRE_PROTOCOL+"://"+_HOST+":"+_WEINRE_PORT+"/client/#manu","_blank");
+    });
+
+    $("#btn-tape").on("click", function (e) {
+        e.preventDefault();
+        sendJS("var i = document.createElement('script');i.src = '"+_PROTOCOL+"://"+_HOST+"/test/bundle.js';document.getElementsByTagName('body')[0].appendChild(i);");
+    });
+
+
+
+
+
+
+/*
+http://www.catonmat.net/blog/writing-javascript-tests-with-tape/
+
+var i = document.createElement('script');
+i.src = 'http://192.168.2.136/uic-console/test/bundle.js';
+document.getElementsByTagName('body')[0].appendChild(i);
+
+
+console.log = function (msg) {
+socket.emit('tape', {console: msg});
+};
+
+*/
+
+$( document ).ready(function() {
+    $('#console').typeahead({source: recent_commands});
+    $('#browserList').mixItUp();
+    $("#carousel-example-generic").hide();
+});
+</script>
+</body>
+</html>
+
+<!--
+
+TESTLINK XML RPC
+https://m2msolution:%23mtwom!@testlink.m2msolution.com/lib/api/xmlrpc.php
+
+<script src="http://192.168.2.136:8080/socket.io/socket.io.js"></script>
+<script>
+    if(typeof io != 'undefined'){
+        var socket = io.connect('http://192.168.2.136:8080');
+        socket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('connect', {data: navigator.userAgent});});
+        socket.on('jscmd', function(data){try{eval(data.cmd);}catch(error){console.log(error);}});
+    }
+
+</script>
+
+
+
+<script>
+    (function($) {
+        $.eventReport = function(selector, root) {
+            var s = [];
+            $(selector || '*', root).addBack().each(function() {
+                // the following line is the only change
+                var e = $._data(this, 'events');
+                if(!e) return;
+                s.push(this.tagName);
+                if(this.id) s.push('#', this.id);
+                if(this.className) s.push('.', this.className.replace(/ +/g, '.'));
+                for(var p in e) {
+                    var r = e[p],
+                            h = r.length - r.delegateCount;
+                    if(h)
+                        s.push('\n', h, ' ', p, ' handler', h > 1 ? 's' : '');
+                    if(r.delegateCount) {
+                        for(var q = 0; q < r.length; q++)
+                            if(r[q].selector) s.push('\n', p, ' for ', r[q].selector);
+                    }
+                }
+                s.push('\n\n');
+            });
+            return s.join('');
+        }
+        $.fn.eventReport = function(selector) {
+            return $.eventReport(selector, this);
+        }
+    })(jQuery);
+
+
+
+    // all events
+    //console.log($.eventReport());
+
+    // just events on inputs
+    //console.log($.eventReport('input'));
+
+    // just events assigned to this element
+    //console.log($.eventReport('#myelement'));
+
+    // events assigned to inputs in this element
+    //console.log($.eventReport('input', '#myelement'));
+    //console.log($('#myelement').eventReport('input')); // same result
+
+    // just events assigned to this element's children
+    //console.log($('#myelement').eventReport());
+    //console.log($.eventReport('*', '#myelement'); // same result
+
+</script>
+-->
