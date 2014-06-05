@@ -42,6 +42,8 @@ Code dans la cible:
 * */
 
 
+// Créer un Bin : http://www.anupshinde.com/posts/how-to-create-nodejs-npm-package/
+
 // INSERT INTO ui_users (userName, password) VALUES ("manu", "manu1234")
 
 'use strict';
