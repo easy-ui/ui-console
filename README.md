@@ -1,4 +1,4 @@
 ui-console
 ==========
 
-Web developer tools for testing, scripting and debuging on remote devices
+Web developer tools for testing, scripting and debugging on remote devices.
