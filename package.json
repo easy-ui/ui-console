@@ -1,9 +1,28 @@
 {
   "name": "uiconsole",
   "version": "0.0.1",
+  "homepage": "https://github.com/easy-ui/ui-console",
   "description": "Web developer tools for testing, scripting and debugging on remote devices.",
-  "author": "easy-ui",
-  "private": false,
+    "author": {
+        "name": "easy-ui",
+        "email": "npm.uiconsole@gmail.com"
+    },
+    "keywords": [
+        "web",
+        "html5",
+        "firebug",
+        "weinre",
+        "tap",
+        "javascript",
+        "webapp",
+        "css",
+        "remote",
+        "mobile",
+        "gremlins",
+        "html2canvas",
+        "easy",
+        "ui"
+    ],
   "devDependencies": {
     "socket.io": "~0.9.16",
     "log-color": "~1.0.0",
