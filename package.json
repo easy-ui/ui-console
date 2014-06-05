@@ -1,12 +1,11 @@
 {
   "name": "uiconsole",
-  "version": "0.0.2",
-  "homepage": "https://github.com/easy-ui/ui-console",
+  "version": "0.0.3",
   "description": "Web developer tools for testing, scripting and debugging on remote devices.",
-    "author": {
-        "name": "easy-ui",
-        "email": "npm.uiconsole@gmail.com"
-    },
+    "author": "easy-ui <npm.uiconsole@gmail.com>",
+  "homepage": "https://github.com/easy-ui/ui-console",
+    "main": "UicSocketDebug.js",
+
     "keywords": [
         "web",
         "html5",
@@ -35,5 +34,12 @@
     "cookie-parser": "~1.1.0",
     "express-session": "~1.2.0",
     "body-parser": "~1.2.0"
-  }
+  },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:easy-ui/ui-console.git"
+    },
+    "bugs": {
+        "url": "https://github.com/easy-ui/ui-console/issues"
+    }
 }
