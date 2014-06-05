@@ -83,9 +83,9 @@ var getClientAddress = function (req) {
 };
 
 
-/*
+
 log.alert('\tU');
-log.critical('\tI');
+ /*log.critical('\tI');
 log.error('\tC');
 log.warning('\tO');
 log.notice('\tN');
