@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/uiconsole.png)](https://nodei.co/npm/uiconsole/)
+
 ui-console
 ==========
 
