@@ -1,6 +1,6 @@
 {
   "name": "uiconsole",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "Web developer tools for testing, scripting and debugging on remote devices.",
   "author": "easy-ui <npm.uiconsole@gmail.com>",
   "homepage": "http://easy-ui.github.io/ui-console",

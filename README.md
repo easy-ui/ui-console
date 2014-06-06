@@ -1,5 +1,5 @@
 [![NPM](https://nodei.co/npm/uiconsole.png)](https://nodei.co/npm/uiconsole/)
-
+[![NPM version](https://badge.fury.io/js/uiconsole.svg)](http://badge.fury.io/js/uiconsole)
 
 **ui-console**
 ==========
