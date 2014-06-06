@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Ui-console by easy-ui</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Ui-console</h1>
+        <h2>Web developer tools for testing, scripting and debuging on remote devices</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/easy-ui/ui-console/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/easy-ui/ui-console/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/easy-ui/ui-console" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <p><a href="https://nodei.co/npm/uiconsole/"><img src="https://nodei.co/npm/uiconsole.png" alt="NPM"></a></p>
+
+<h1>
+<a name="ui-console" class="anchor" href="#ui-console"><span class="octicon octicon-link"></span></a><strong>ui-console</strong>
+</h1>
+
+<p>Web developer tools for testing, scripting and debugging on remote
+devices. This project is under work and maybe there some bug. I made
+this tool for my own use at the beginning and I thought it might be
+useful to other people too.</p>
+
+<p>With <code>uiconsole</code> you run on remote devices (Android, IOS, Computer ...) <a href="https://getfirebug.com/firebuglite">Firebug lite</a>, <a href="http://people.apache.org/%7Epmuellr/weinre/docs/latest/Home.html">WEINRE</a>, <a href="http://grml.in/">GREMLIN.JS</a></p>
+
+<p>You are able to take a Screenshot of the current web page too. This is possible with the <a href="http://html2canvas.hertzen.com/documentation.html">html2canvas</a> library.</p>
+
+<p>There is a JSCONSOLE, which allows you to send javascript commands to the target Web page.</p>
+
+<p>You can also define commands javascript to run tests simultaneously on your different devices.</p>
+
+<p>This is very useful when you need to see a page rendering on different devices, phone, tablet or computer at the same time. Need to enter the same login passwords on all devices, a real time saver.</p>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>Install this globally and you'll have access to the <code>uiconsole</code> command anywhere on your system.</p>
+
+<pre><code>npm install -g uiconsole
+</code></pre>
+
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a><strong>Usage</strong>
+</h1>
+
+<ul>
+<li>
+<p>Create a folder.</p>
+
+<pre><code>mkdir uiconsole
+cd uiconsole
+</code></pre>
+</li>
+<li>
+<p>Start 'uiconsole' and a web server and a socket server run on port 8080.</p>
+
+<pre><code>uiconsole
+</code></pre>
+</li>
+<li><p>A small SQLite database is created for user management. The default account is 'admin' for the User name and 'password' for password.</p></li>
+<li><p>Weinre is started on port 8282</p></li>
+<li>
+<p>Open your browser for access to the <code>uiconsole</code>.</p>
+
+<pre><code>http://&lt; your_ip &gt;:8080
+</code></pre>
+</li>
+<li>
+<p>Then add this code on your target web page:</p>
+
+<pre><code>&lt;script src="http://&lt;your_ip&gt;:8080/socket.io/socket.io.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+if(typeof io != 'undefined'){
+    var socket = io.connect('http://&lt;your_ip&gt;:8080');
+    socket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('connect', {data: navigator.userAgent});});
+    socket.on('jscmd', function(data){try{eval(data.cmd);}catch(error){console.log(error);}});
+}
+</code></pre>
+
+<p></p>
+</li>
+</ul>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
