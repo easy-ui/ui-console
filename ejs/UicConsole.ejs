@@ -224,14 +224,14 @@
 <script src="js/ua-parser.js"></script>
 <script src="js/holder.js"></script>
 
-<script src="https://192.168.2.136/socket.io/socket.io.js"></script>
+<script src="http://127.0.0.1:8080/socket.io/socket.io.js"></script>
 <script>
 // TTS see : http://www.masswerk.at/mespeak/
 
 // Multi touch : http://rawgit.com/EightMedia/hammer.js/master/tests/manual/events.html
 // https://github.com/EightMedia/hammer.js/tree/1.1.2/
     if(typeof io != 'undefined'){
-        var socket = io.connect('https://192.168.2.136');
+        var socket = io.connect('http://127.0.0.1:8080');
     }
 
     var parser = new UAParser();

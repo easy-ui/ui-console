@@ -1,0 +1,15 @@
+node_modules/
+not-used/
+npmjs.org/
+.idea/
+ssh/
+ssl/
+test/
+uidb.db
+uidb.sql
+UicConsole.html
+start-weinre.bat
+photo.png
+openshift.txt
+login.html
+login.css
