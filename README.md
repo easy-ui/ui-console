@@ -19,6 +19,7 @@ You can also define commands javascript to run tests simultaneously on your diff
 
 This is very useful when you need to see a page rendering on different devices, phone, tablet or computer at the same time. Need to enter the same login passwords on all devices, a real time saver.
 
+![Screenshot of application](https://raw.githubusercontent.com/easy-ui/ui-console/master/images/uiconsole-screenshot.jpg "Uiconsole manager")
 
 Installation
 ============
