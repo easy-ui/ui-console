@@ -1,12 +1,11 @@
 {
   "name": "uiconsole",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "Web developer tools for testing, scripting and debugging on remote devices.",
-    "author": "easy-ui <npm.uiconsole@gmail.com>",
-  "homepage": "https://github.com/easy-ui/ui-console",
-    "main": "./uiconsole.js",
-
-    "keywords": [
+  "author": "easy-ui <npm.uiconsole@gmail.com>",
+  "homepage": "http://easy-ui.github.io/ui-console",
+  "main": "./uiconsole.js",
+  "keywords": [
         "web",
         "html5",
         "firebug",
@@ -21,8 +20,8 @@
         "html2canvas",
         "easy",
         "ui"
-    ],
-    "dependencies": {
+  ],
+  "dependencies": {
         "socket.io": "~0.9.16",
         "log-color": "~1.0.0",
         "weinre": "~2.0.0-pre-HH0SN197",
