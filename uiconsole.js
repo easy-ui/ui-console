@@ -1,6 +1,5 @@
 "use strict"
 
-
 function convertUiconsole() {
 
     var express         = require('express'),
@@ -32,6 +31,67 @@ function convertUiconsole() {
         consoleSocket   = new Object(),
         exec            = require('child_process').exec;
 
+
+    // Doc SQL : http://sql.sh/cours/
+
+    if(process.argv.length > 2) {
+
+        var command_type = process.argv[2];
+
+        if (command_type == "addUser") {
+
+            var addUserName = process.argv[3];
+            var addUserPass = process.argv[4];
+
+            db.run('INSERT INTO ui_users (userName, password) VALUES ("'+addUserName+'", "'+addUserPass+'")');
+
+            console.log("User '"+addUserName+"' added !");
+
+            process.exit(0);
+
+        } else if(command_type == "updateAdminPassword") {
+
+            var oldPass = process.argv[3];
+            var newPass = process.argv[4];
+
+            db.run('UPDATE ui_users SET password = "'+newPass+'" WHERE userName = "admin" AND password = "'+oldPass+'"');
+
+            console.log("Admin password updated !");
+
+            process.exit(0);
+
+        } else if(command_type == "updateUserPassword") {
+
+            var updateUserName = process.argv[3];
+            var oldPass = process.argv[4];
+            var newPass = process.argv[5];
+
+            db.run('UPDATE ui_users SET password = "'+newPass+'" WHERE userName = "'+updateUserName+'" AND password = "'+oldPass+'"');
+
+            console.log("User '"+updateUserName+"' password updated !");
+
+            process.exit(0);
+
+
+        } else if(command_type == "deleteUser") {
+
+            var deleteUserName = process.argv[3];
+
+            db.run('DELETE FROM ui_users WHERE userName = "'+deleteUserName+'"');
+
+            console.log("User '"+deleteUserName+"' deleted !");
+
+            process.exit(0);
+
+        } else {
+
+            console.log("Command not found. Please read the README <https://www.npmjs.org/package/uiconsole> for more help.");
+
+            process.exit(0);
+
+        }
+    }
+
 // create our router
 //var router = express.Router();
 
@@ -50,8 +110,8 @@ function convertUiconsole() {
 // Webserver config
     log.notice("Webserver Express initialization");
 // Express config
-// On definit le dossier courant comme arborescence web
-// On definit le moteur de template ejs
+// Define current web path
+// Define current rendering engine (ejs)
     app.use(express.static(__dirname + '/'));
     app.set('views', __dirname + '/');
     app.set('view engine', 'ejs');

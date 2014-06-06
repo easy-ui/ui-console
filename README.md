@@ -29,8 +29,8 @@ Install this globally and you'll have access to the `uiconsole` command anywhere
     npm install -g uiconsole
     
     
-**Usage**
-=========
+Usage
+=====
 
  - Create a folder.
 
@@ -59,6 +59,40 @@ Install this globally and you'll have access to the `uiconsole` command anywhere
         }
     </script>
 
+Command parameters
+=====
 
-  [1]: https://getfirebug.com/firebuglite
-  [2]: http://people.apache.org/~pmuellr/weinre/docs/latest/Home.html
+Currently managing user has no security and no verification before the execution of the SQL command.
+
+You can check the information with the tools [sqlite manager](https://code.google.com/p/sqlite-manager/). Or other tools if you prefer.
+
+Add user
+----
+
+ - You can add a new user to the SQLite for user management.
+ 
+        uiconsole addUser your_username your_password
+
+
+Update user password
+----
+
+ - You can update the user password.
+ 
+        uiconsole updateUserPassword username old_password new_password
+     
+Update default admin password
+----
+
+ - You can update the admin password.
+ 
+        uiconsole updateAdminPassword old_password new_password
+     
+
+Delete user
+----
+
+ - You can delete a user to the SQLite.
+ 
+        uiconsole deleteUser username
+
