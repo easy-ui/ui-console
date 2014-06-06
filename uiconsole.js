@@ -1,7 +1,7 @@
 "use strict"
 
 
-function convertThis() {
+function convertUiconsole() {
 
     var express         = require('express'),
         cookieParser    = require('cookie-parser'),
@@ -20,9 +20,9 @@ function convertThis() {
             ca: fs.readFileSync('ssl/certs/server.crt')
         },
         app             = module.exports = express(),
-        //port            = process.env.PORT || 443,
+    //port            = process.env.PORT || 443,
         port            = process.env.PORT || 8080,
-        //server          = https.createServer(options, app).listen(port),
+    //server          = https.createServer(options, app).listen(port),
         server          = http.createServer(app).listen(port),
         io              = require('socket.io').listen(server),
         Log 		    = require('log-color'),
@@ -43,7 +43,7 @@ function convertThis() {
     };
 
     log.notice("START WEINRE SERVER");
-    exec('weinre -boundHost 192.168.2.136 -httpPort 8282 -verbose true', function(err, stdout, stderr) {
+    exec('weinre -boundHost 127.0.0.1 -httpPort 8282 -verbose true', function(err, stdout, stderr) {
         console.log(stdout);
     });
 
@@ -151,7 +151,7 @@ function convertThis() {
         if(!exists) {
             db.run('CREATE TABLE ui_connected (jsondata TEXT)');
             db.run('CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT)');
-            db.run('INSERT INTO ui_users (userName, password) VALUES ("manu", "manu1234")');
+            db.run('INSERT INTO ui_users (userName, password) VALUES ("admin", "password")');
         }
     });
 
@@ -282,4 +282,4 @@ function convertThis() {
     }
 }
 
-exports.convert = convertThis;
+exports.convert = convertUiconsole;
