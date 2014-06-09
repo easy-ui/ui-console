@@ -29,7 +29,15 @@ function convertUiconsole() {
         browserList     = new Object(),
         socketList      = new Object(),
         consoleSocket   = new Object(),
-        exec            = require('child_process').exec;
+        exec            = require('child_process').exec,
+        confJsonFileName = '_conf.json',
+        confJSON = {
+            host:'127.0.0.1',
+            port:'8080',
+            weinreHost: '127.0.0.1',
+            weinrePort: '8282'
+        };
+
 
 
     // Doc SQL : http://sql.sh/cours/
@@ -83,6 +91,20 @@ function convertUiconsole() {
 
             process.exit(0);
 
+        } else if(command_type == "init") {
+
+            var outputFilename = confJsonFileName;
+
+            fs.writeFile(outputFilename, JSON.stringify(confJSON, null, 4), function(err) {
+                if(err) {
+                    console.log(err);
+                    process.exit(0);
+                } else {
+                    console.log("JSON saved to " + outputFilename);
+                    process.exit(0);
+                }
+            });
+
         } else {
 
             console.log("Command not found. Please read the README <https://www.npmjs.org/package/uiconsole> for more help.");
@@ -95,6 +117,18 @@ function convertUiconsole() {
 // create our router
 //var router = express.Router();
 
+    // Load configuration file `_conf.json`
+    fs.readFile(confJsonFileName, 'utf8', function (err, data) {
+        if (err) {
+            console.log('There no config file! Please try to generate again. `uiconsole init` then edit '+confJsonFileName+' with your parameters.');
+            process.exit(0);
+        }
+
+        confJSON = JSON.parse(data);
+
+        console.dir("Config file loaded successfully.");
+    });
+
 
 // Get client IP address from request object ----------------------
     var getClientAddress = function (req) {
@@ -103,7 +137,7 @@ function convertUiconsole() {
     };
 
     log.notice("START WEINRE SERVER");
-    exec('weinre -boundHost 127.0.0.1 -httpPort 8282 -verbose true', function(err, stdout, stderr) {
+    exec('weinre -boundHost '+confJSON.weinreHost+' -httpPort '+confJSON.weinrePort+' -verbose true', function(err, stdout, stderr) {
         console.log(stdout);
     });
 
@@ -147,7 +181,11 @@ function convertUiconsole() {
         } else {
             res.render('ejs/UicConsole', {
                 userName: req.session.userName,
-                lastConnected: req.session.lastConnected
+                lastConnected: req.session.lastConnected,
+                host: confJSON.host,
+                port: confJSON.port,
+                weinreHost: confJSON.weinreHost,
+                weinrePort: confJSON.weinrePort
             });
         }
     });
