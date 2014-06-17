@@ -42,7 +42,7 @@ Usage
  
         uiconsole init
         
- - Setup your server parameters.
+ - Setup your server parameters in _conf.json
         
         {
             "host": "192.168.2.136",
