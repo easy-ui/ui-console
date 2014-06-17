@@ -50,13 +50,18 @@ Usage
             "weinreHost": "192.168.2.136",
             "weinrePort": "8282"
         }
+   
+ - Populate database.
+ 
+        uiconsole initdb
         
+ - A small SQLite database is created for user management. The default account is `admin` for the User name and `password` for password.
 
  - Start 'uiconsole' and a web server and a socket server run on port 8080.
  
         uiconsole
     
- - A small SQLite database is created for user management. The default account is 'admin' for the User name and 'password' for password.
+ 
  - Weinre is started on port 8282
 
  - Open your browser for access to the `uiconsole`.

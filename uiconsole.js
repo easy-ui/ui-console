@@ -13,11 +13,13 @@ function convertUiconsole() {
         exists          = fs.existsSync(databaseFile),
         sqlite3         = require("sqlite3").verbose(),
         db              = new sqlite3.Database(databaseFile),
+        /*
         options         = {
             key: fs.readFileSync('ssl/private/server.key'),
             cert: fs.readFileSync('ssl/certs/server.crt'),
             ca: fs.readFileSync('ssl/certs/server.crt')
         },
+        */
         app             = module.exports = express(),
     //port            = process.env.PORT || 443,
         port            = process.env.PORT || 8080,
@@ -40,7 +42,7 @@ function convertUiconsole() {
 
 
 
-    // Doc SQL : http://sql.sh/cours/
+
 
     if(process.argv.length > 2) {
 
@@ -104,6 +106,25 @@ function convertUiconsole() {
                     process.exit(0);
                 }
             });
+
+        } else if(command_type == "initdb") {
+
+            // Doc SQL : http://sql.sh/cours/
+            // Sqlite3 database initialization
+            log.notice("Populate Database tables");
+            db.serialize(function() {
+                //if(!exists) {
+                /**/
+                    db.run('CREATE TABLE ui_connected (jsondata TEXT)');
+                    db.run('CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT)');
+                    db.run('INSERT INTO ui_users (userName, password) VALUES ("admin", "password")');
+
+                //}
+
+
+            });
+
+            //process.exit(0);
 
         } else {
 
@@ -243,15 +264,7 @@ function convertUiconsole() {
     });
 
 
-// Sqlite3 database initialization
-    log.notice("Database initialization");
-    db.serialize(function() {
-        if(!exists) {
-            db.run('CREATE TABLE ui_connected (jsondata TEXT)');
-            db.run('CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT)');
-            db.run('INSERT INTO ui_users (userName, password) VALUES ("admin", "password")');
-        }
-    });
+
 
 // Socket.io initialization
     log.notice("Socket.io ready");
