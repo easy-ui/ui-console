@@ -140,6 +140,6 @@ Schematic database.
 
  - Currently the schema of the database is very simplistic.
 
-
-    CREATE TABLE ui_connected (jsondata TEXT);
-    CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT);
+        CREATE TABLE ui_connected (jsondata TEXT);
+        CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT);
+        
