@@ -148,6 +148,8 @@ function convertUiconsole() {
         confJSON = JSON.parse(data);
 
         console.dir("Config file loaded successfully.");
+
+        runWeinre(confJSON);
     });
 
 
@@ -157,10 +159,16 @@ function convertUiconsole() {
             || req.connection.remoteAddress;
     };
 
-    log.notice("START WEINRE SERVER");
-    exec('weinre -boundHost '+confJSON.weinreHost+' -httpPort '+confJSON.weinrePort+' -verbose true', function(err, stdout, stderr) {
-        console.log(stdout);
-    });
+    var runWeinre = function(confJSON){
+
+        log.notice("START WEINRE SERVER " + confJSON.weinreHost + ":" + confJSON.weinrePort);
+        exec('weinre -boundHost '+confJSON.weinreHost+' -httpPort '+confJSON.weinrePort+' -verbose true', function(err, stdout, stderr) {
+            console.log(stdout);
+        });
+
+    };
+
+
 
 // Webserver config
     log.notice("Webserver Express initialization");

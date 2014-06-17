@@ -2,6 +2,14 @@
 [![NPM version](https://badge.fury.io/js/uiconsole.svg)](http://badge.fury.io/js/uiconsole)
 [![Gittip](http://img.shields.io/gittip/easy-ui.svg)](https://www.gittip.com/easy-ui/)
 
+Versions
+=========
+
+**v 0.1.0 - 2014/06/17**
+
+* Bug fix, and is completly functional.
+
+
 **ui-console**
 ==========
 
