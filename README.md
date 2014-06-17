@@ -1,5 +1,6 @@
-[![NPM](https://nodei.co/npm/uiconsole.png)](https://nodei.co/npm/uiconsole/)
+[![NPM](https://nodei.co/npm/uiconsole.png?downloads=true&stars=true)](https://nodei.co/npm/uiconsole/)
 [![NPM version](https://badge.fury.io/js/uiconsole.svg)](http://badge.fury.io/js/uiconsole)
+[![Gittip](http://img.shields.io/gittip/easy-ui.svg)](https://www.gittip.com/easy-ui/)
 
 **ui-console**
 ==========
@@ -36,6 +37,20 @@ Usage
 
         mkdir uiconsole
         cd uiconsole
+        
+ - Generate config file.
+ 
+        uiconsole init
+        
+ - Setup your server parameters.
+        
+        {
+            "host": "192.168.2.136",
+            "port": "8080",
+            "weinreHost": "192.168.2.136",
+            "weinrePort": "8282"
+        }
+        
 
  - Start 'uiconsole' and a web server and a socket server run on port 8080.
  
