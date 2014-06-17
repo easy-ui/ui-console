@@ -514,9 +514,10 @@
 
         socket.on('connect', function () {
             console.log('CLIENT socket.on: connect ');
-            console.log(this.socket.sessionid);
+            //console.log(this.socket.sessionid);
+            console.log(this.io.engine.id);
 
-            socket.emit('imconsole', {data: this.socket.sessionid});
+            socket.emit('imconsole', {data: this.io.engine.id});
             socket.emit('getBrowserList');
         });
 
@@ -737,8 +738,7 @@ $( document ).ready(function() {
 
 <!--
 
-TESTLINK XML RPC
-https://m2msolution:%23mtwom!@testlink.m2msolution.com/lib/api/xmlrpc.php
+
 
 <script src="http://192.168.2.136:8080/socket.io/socket.io.js"></script>
 <script>

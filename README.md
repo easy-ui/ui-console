@@ -5,6 +5,11 @@
 Versions
 =========
 
+**v 0.1.4 - 2014/06/17**
+
+* Convert project to socket.io 1.0.0
+* Not completly functional.
+
 **v 0.1.0 - 2014/06/17**
 
 * Bug fix, and is completly functional.

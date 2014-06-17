@@ -25,7 +25,7 @@ function convertUiconsole() {
         port            = process.env.PORT || 8080,
     //server          = https.createServer(options, app).listen(port),
         server          = http.createServer(app).listen(port),
-        io              = require('socket.io').listen(server),
+        io              = require('socket.io')(server),
         Log 		    = require('log-color'),
         log 		    = new Log({ level: 'debug', color: true }),
         browserList     = new Object(),
@@ -272,14 +272,15 @@ function convertUiconsole() {
     });
 
 
+    // https://github.com/angular/angular-seed
 
 
 // Socket.io initialization
     log.notice("Socket.io ready");
-    io.sockets.on('connection', function (socket) {
+    io.on('connection', function (socket) {
 
         var address = socket.handshake.address;
-        var domainOrigin = socket.handshake.headers.origin;
+        var domainOrigin = socket.handshake.headers.referer;
         var connectionTime = socket.handshake.time;
 
         console.log("------------------------------------------");
@@ -294,9 +295,9 @@ function convertUiconsole() {
         stmt.run( JSON.stringify( socket.handshake ));
         stmt.finalize();
 
-        socket.on('connect', function(data, callback){
-            log.notice('SERVER socket.on: connect:'+ data.data);
-            log.notice('SERVER socket.on: connect:'+ socket.id);
+        socket.on('client_connect', function(data, callback){
+            log.notice('SERVER socket.on: connect data.data:'+ data.data);
+            log.notice('SERVER socket.on: connect socket.id:'+ socket.id);
             log.notice("Domain Origin " + domainOrigin);
             var clientData = new Object();
             clientData.data = data.data;
@@ -306,8 +307,12 @@ function convertUiconsole() {
             //browserList[socket.id] = data.data;
             browserList[socket.id] = clientData;
             socketList[socket.id] = socket;
-            //io.sockets.emit('BrowserList', {list: browserList});
-            io.sockets.socket(consoleSocket[0]).emit('BrowserList', {list: browserList});
+            io.emit('BrowserList', {list: browserList});
+            //io.sockets.connected[socket.id].emit('message', 'for your eyes only');
+            /*
+            if (io.sockets.connected[consoleSocket[0]]) {
+                io.sockets.connected(consoleSocket[0]).emit('BrowserList', {list: browserList});
+            }*/
         });
 
         socket.on('imconsole', function(data, callback){
@@ -325,7 +330,12 @@ function convertUiconsole() {
             log.notice('SERVER socket.on: jscmdto');
             log.notice('SERVER socket.on: jscmdto:'+data.socketid);
             log.notice('SERVER socket.on: jscmdto:'+socketList[data.socketid].id);
-            io.sockets.socket(socketList[data.socketid].id).emit('jscmd', {cmd: data.cmd});
+            io.to(socketList[data.socketid].id).emit('jscmd', {cmd: data.cmd});
+            /*
+            if (io.sockets.connected[socketList[data.socketid].id]) {
+                io.sockets.connected(socketList[data.socketid].id).emit('jscmd', {cmd: data.cmd});
+            }
+            */
         });
 
         socket.on('getBrowserList', function(){
@@ -335,17 +345,34 @@ function convertUiconsole() {
 
         socket.on('handlers', function(data, callback){
             log.notice('SERVER socket.on: handlers:'+ data.data);
-            io.sockets.socket(consoleSocket[0]).emit('handlers', {data: data});
+            io.to(socketList[data.socketid].id).emit('handlers', {data: data});
+            /*
+            if (io.sockets.connected[consoleSocket[0]]) {
+                io.sockets.connected(consoleSocket[0]).emit('handlers', {data: data});
+            }
+            */
         });
 
         socket.on('screenshot', function(data, callback){
             log.notice('SERVER socket.on: screenshot:'+ data.data);
-            io.sockets.socket(consoleSocket[0]).emit('screenshot', {data: data});
+            console.dir("id: "+socket);
+            //io.to(socketList[data.socketid].id).emit('screenshot', {data: data});
+
+            /*
+            if (io.sockets.connected[consoleSocket[0]]) {
+                io.sockets.connected(consoleSocket[0]).emit('screenshot', {data: data});
+            }
+            */
         });
 
         socket.on('tape', function(data, callback){
             log.notice('SERVER socket.on: tape:'+ data.console);
-            io.sockets.socket(consoleSocket[0]).emit('tape', {data: data});
+            io.to(socketList[data.socketid].id).emit('tape', {data: data});
+            /*
+            if (io.sockets.connected[consoleSocket[0]]) {
+                io.sockets.connected(consoleSocket[0]).emit('tape', {data: data});
+            }
+            */
         });
 
         socket.on('disconnect', function(){
@@ -381,20 +408,24 @@ function convertUiconsole() {
 
     function disconnect(socket){
         // get a list of rooms for the client
-        var rooms = io.sockets.manager.roomClients[socket.id];
+        //var rooms = io.sockets.manager.roomClients[socket.id];
 
         // unsubscribe from the rooms
+        /*
         for(var room in rooms){
             if(room && rooms[room]){
                 //unsubscribe(socket, { room: room.replace('/','') });
                 socket.leave(room.replace('/',''));
             }
         }
+        */
+        socket.leave('');
 
         // client was unsubscribed from the rooms,
         // now we can selete him from the hash object
         delete browserList[socket.id];
-        io.sockets.emit('BrowserList', {list: browserList});
+        //io.sockets.emit('BrowserList', {list: browserList}); // 0.9.6
+        io.emit('BrowserList', {list: browserList}); // 1.0.0
         // Disconnect socket
         log.notice('socket.disconnect');
         //socket.disconnect()
