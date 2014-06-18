@@ -18,6 +18,7 @@
             border-radius: 4px;
             color: #333333;
         }
+        #main-console {width: 75%}
         .list-group-item img{margin: 2px 5px 2px 2px; padding: 0;}
         #console-log{height: 230px;margin: 20px 0 0;overflow: auto;}
         #browserList .mix{ display: none;}
@@ -107,6 +108,11 @@
     <div class="alert alert-success">
         <p><span class="glyphicon glyphicon-user"></span> <%- userName %></p>
         <p><span class="glyphicon glyphicon-time"></span> Last connection : <%- lastConnected %></p>
+    </div>
+
+    <div class="alert alert-info">
+        <h3>Add this code on your target web page:</h3>
+        <textarea id="uiconsoleSocketJS" style="width: 100%; height: 150px;"></textarea>
     </div>
 
     <div class="row">
@@ -482,7 +488,12 @@
 
         if(!bCurrentSocketID){
             $("#main-console").hide();
+
+            var uiconsoleSocket = "&lt;script src=\""+_PROTOCOL+"://"+_HOST+":"+_PORT+"/socket.io/socket.io.js\"&gt;&lt;\/script&gt;\n&lt;script&gt;\nif(typeof io != 'undefined'){\n\tvar socket = io.connect('"+_PROTOCOL+"://"+_HOST+":"+_PORT+"');\n\tsocket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('client_connect', {data: navigator.userAgent});});\n\tsocket.on('jscmd', function(data){try{eval(data.cmd);}catch(error){console.log(error);}});}\n&lt;\/script&gt;";
+            $("#uiconsoleSocketJS").empty().append(uiconsoleSocket);
+
         } else {
+
             $(".list-group-item[data-id=" + current_socketid +"]").css('background-color','#DFF0D8');
         }
 

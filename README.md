@@ -31,7 +31,7 @@ devices. This project is under work and maybe there some bug. I made
 this tool for my own use at the beginning and I thought it might be
 useful to other people too.
 
-With `uiconsole` you run on remote devices (Android, IOS, Computer ...) [Firebug lite](https://getfirebug.com/firebuglite), [WEINRE](http://people.apache.org/~pmuellr/weinre/docs/latest/Home.html), [GREMLIN.JS](http://grml.in/)
+With `uiconsole` you run on remote devices (Android, IOS, Computer ...) [Firebug lite](https://getfirebug.com/firebuglite), [WEINRE](http://people.apache.org/~pmuellr/weinre/docs/latest/Home.html), [GREMLIN.JS](http://grml.in/), [TAPE](https://www.npmjs.org/package/tape)
 
 You are able to take a Screenshot of the current web page too. This is possible with the [html2canvas](http://html2canvas.hertzen.com/documentation.html) library.
 
