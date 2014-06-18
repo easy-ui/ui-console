@@ -356,7 +356,7 @@ function convertUiconsole() {
         socket.on('screenshot', function(data, callback){
             log.notice('SERVER socket.on: screenshot:'+ data.data);
             console.dir("id: "+socket);
-            //io.to(socketList[data.socketid].id).emit('screenshot', {data: data});
+            io.to(consoleSocket[0]).emit('screenshot', {data: data});
 
             /*
             if (io.sockets.connected[consoleSocket[0]]) {

@@ -5,6 +5,11 @@
 Versions
 =========
 
+**v 0.1.5 - 2014/06/18**
+
+* Convert project to socket.io 1.0.4
+* Fix bug on screenshot
+
 **v 0.1.4 - 2014/06/17**
 
 * Convert project to socket.io 1.0.0
@@ -103,11 +108,8 @@ Weinre
    This will inject the script server connection in your target web page.
    As the server is already started on the 8282 port, your target page will be displayed in the web interface weinre.
    
-   Current injection is not dynamic with the IP address of your server. I will address shortly.
-   
-   If you really want to use weinre, you must edit the file 'UicConsole.ejs' in your modules folder.
-   
-        var _HOST = '127.0.0.1';
+   Now injection is dynamic with the IP address of your server. See _conf.json `weinreHost`
+
 
  - Open your browser for access to the `weinre`.
 
