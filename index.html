@@ -28,9 +28,32 @@
 
     <div class="container">
       <section id="main_content">
-        <p><a href="https://nodei.co/npm/uiconsole/"><img src="https://nodei.co/npm/uiconsole.png" alt="NPM"></a></p>
+        <p><a href="https://nodei.co/npm/uiconsole/"><img src="https://nodei.co/npm/uiconsole.png?downloads=true&amp;stars=true" alt="NPM"></a>
+<a href="http://badge.fury.io/js/uiconsole"><img src="https://badge.fury.io/js/uiconsole.svg" alt="NPM version"></a>
+<a href="https://www.gittip.com/easy-ui/"><img src="http://img.shields.io/gittip/easy-ui.svg" alt="Gittip"></a></p>
 
 <h1>
+<a name="versions" class="anchor" href="#versions"><span class="octicon octicon-link"></span></a>Versions</h1>
+
+<p><strong>v 0.1.8 - 2014/06/18</strong></p>
+
+<ul>
+<li>Add TAP support example with Broserify</li>
+</ul><p><strong>v 0.1.5 - 2014/06/18</strong></p>
+
+<ul>
+<li>Convert project to socket.io 1.0.4</li>
+<li>Fix bug on screenshot</li>
+</ul><p><strong>v 0.1.4 - 2014/06/17</strong></p>
+
+<ul>
+<li>Convert project to socket.io 1.0.0</li>
+<li>Not completly functional.</li>
+</ul><p><strong>v 0.1.0 - 2014/06/17</strong></p>
+
+<ul>
+<li>Bug fix, and is completly functional.</li>
+</ul><h1>
 <a name="ui-console" class="anchor" href="#ui-console"><span class="octicon octicon-link"></span></a><strong>ui-console</strong>
 </h1>
 
@@ -49,6 +72,8 @@ useful to other people too.</p>
 
 <p>This is very useful when you need to see a page rendering on different devices, phone, tablet or computer at the same time. Need to enter the same login passwords on all devices, a real time saver.</p>
 
+<p><img src="https://raw.githubusercontent.com/easy-ui/ui-console/master/images/uiconsole-screenshot.jpg" alt="Screenshot of application" title="Uiconsole manager"></p>
+
 <h1>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
 
@@ -58,8 +83,7 @@ useful to other people too.</p>
 </code></pre>
 
 <h1>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a><strong>Usage</strong>
-</h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
 
 <ul>
 <li>
@@ -70,12 +94,35 @@ cd uiconsole
 </code></pre>
 </li>
 <li>
+<p>Generate config file.</p>
+
+<pre><code>uiconsole init
+</code></pre>
+</li>
+<li>
+<p>Setup your server parameters in _conf.json</p>
+
+<pre><code>{
+    "host": "192.168.2.136",
+    "port": "8080",
+    "weinreHost": "192.168.2.136",
+    "weinrePort": "8282"
+}
+</code></pre>
+</li>
+<li>
+<p>Populate database.</p>
+
+<pre><code>uiconsole initdb
+</code></pre>
+</li>
+<li><p>A small SQLite database is created for user management. The default account is <code>admin</code> for the User name and <code>password</code> for password.</p></li>
+<li>
 <p>Start 'uiconsole' and a web server and a socket server run on port 8080.</p>
 
 <pre><code>uiconsole
 </code></pre>
 </li>
-<li><p>A small SQLite database is created for user management. The default account is 'admin' for the User name and 'password' for password.</p></li>
 <li><p>Weinre is started on port 8282</p></li>
 <li>
 <p>Open your browser for access to the <code>uiconsole</code>.</p>
@@ -93,9 +140,89 @@ if(typeof io != 'undefined'){
     socket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('connect', {data: navigator.userAgent});});
     socket.on('jscmd', function(data){try{eval(data.cmd);}catch(error){console.log(error);}});
 }
+&lt;/script&gt;
 </code></pre>
+</li>
+<li>
+<p>Soon I plan to incorporate the use of a bookmarklet target like this.:</p>
 
-<p></p>
+<pre><code>javascript:(function(e){e.setAttribute("src","http://&lt;your_ip&gt;:8080/socket.io/socket.io.js");document.getElementsByTagName("body")[0].appendChild(e);})(document.createElement("script"));void(0);
+</code></pre>
+</li>
+</ul><h1>
+<a name="weinre" class="anchor" href="#weinre"><span class="octicon octicon-link"></span></a>Weinre</h1>
+
+<ul>
+<li>
+<p>If you want to use 'weinre' you must click the button weinre "JSCONSOLE".
+This will inject the script server connection in your target web page.
+As the server is already started on the 8282 port, your target page will be displayed in the web interface weinre.</p>
+
+<p>Now injection is dynamic with the IP address of your server. See _conf.json <code>weinreHost</code></p>
+</li>
+<li>
+<p>Open your browser for access to the <code>weinre</code>.</p>
+
+<pre><code>http://&lt; your_ip &gt;:8282
+</code></pre>
+</li>
+</ul><h1>
+<a name="command-parameters" class="anchor" href="#command-parameters"><span class="octicon octicon-link"></span></a>Command parameters</h1>
+
+<p>Currently managing user has no security and no verification before the execution of the SQL command.</p>
+
+<p>You can check the information with the tools <a href="https://code.google.com/p/sqlite-manager/">sqlite manager</a>. Or other tools if you prefer.</p>
+
+<h2>
+<a name="add-user" class="anchor" href="#add-user"><span class="octicon octicon-link"></span></a>Add user</h2>
+
+<ul>
+<li>
+<p>You can add a new user to the SQLite for user management.</p>
+
+<pre><code>uiconsole addUser your_username your_password
+</code></pre>
+</li>
+</ul><h2>
+<a name="update-user-password" class="anchor" href="#update-user-password"><span class="octicon octicon-link"></span></a>Update user password</h2>
+
+<ul>
+<li>
+<p>You can update the user password.</p>
+
+<pre><code>uiconsole updateUserPassword username old_password new_password
+</code></pre>
+</li>
+</ul><h2>
+<a name="update-default-admin-password" class="anchor" href="#update-default-admin-password"><span class="octicon octicon-link"></span></a>Update default admin password</h2>
+
+<ul>
+<li>
+<p>You can update the admin password.</p>
+
+<pre><code>uiconsole updateAdminPassword old_password new_password
+</code></pre>
+</li>
+</ul><h2>
+<a name="delete-user" class="anchor" href="#delete-user"><span class="octicon octicon-link"></span></a>Delete user</h2>
+
+<ul>
+<li>
+<p>You can delete a user to the SQLite.</p>
+
+<pre><code>uiconsole deleteUser username
+</code></pre>
+</li>
+</ul><h2>
+<a name="schematic-database" class="anchor" href="#schematic-database"><span class="octicon octicon-link"></span></a>Schematic database.</h2>
+
+<ul>
+<li>
+<p>Currently the schema of the database is very simplistic.</p>
+
+<pre><code>CREATE TABLE ui_connected (jsondata TEXT);
+CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT);
+</code></pre>
 </li>
 </ul>
       </section>
