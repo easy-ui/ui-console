@@ -5,6 +5,9 @@
 Versions
 =========
 
+**v 0.1.14 - 2014/06/18**
+* Updating EJS views for better rendering
+
 **v 0.1.8 - 2014/06/18**
 * Add TAP support example with Broserify
 
