@@ -35,7 +35,11 @@
 <h1>
 <a name="versions" class="anchor" href="#versions"><span class="octicon octicon-link"></span></a>Versions</h1>
 
-<p><strong>v 0.1.8 - 2014/06/18</strong></p>
+<p><strong>v 0.1.14 - 2014/06/18</strong></p>
+
+<ul>
+<li>Updating EJS views for better rendering</li>
+</ul><p><strong>v 0.1.8 - 2014/06/18</strong></p>
 
 <ul>
 <li>Add TAP support example with Broserify</li>
@@ -54,7 +58,7 @@
 <ul>
 <li>Bug fix, and is completly functional.</li>
 </ul><h1>
-<a name="ui-console" class="anchor" href="#ui-console"><span class="octicon octicon-link"></span></a><strong>ui-console</strong>
+<a name="ui-console-the-web-console" class="anchor" href="#ui-console-the-web-console"><span class="octicon octicon-link"></span></a><strong>ui-console the web console</strong>
 </h1>
 
 <p>Web developer tools for testing, scripting and debugging on remote
@@ -62,7 +66,7 @@ devices. This project is under work and maybe there some bug. I made
 this tool for my own use at the beginning and I thought it might be
 useful to other people too.</p>
 
-<p>With <code>uiconsole</code> you run on remote devices (Android, IOS, Computer ...) <a href="https://getfirebug.com/firebuglite">Firebug lite</a>, <a href="http://people.apache.org/%7Epmuellr/weinre/docs/latest/Home.html">WEINRE</a>, <a href="http://grml.in/">GREMLIN.JS</a></p>
+<p>With <code>uiconsole</code> you run on remote devices (Android, IOS, Computer ...) <a href="https://getfirebug.com/firebuglite">Firebug lite</a>, <a href="http://people.apache.org/%7Epmuellr/weinre/docs/latest/Home.html">WEINRE</a>, <a href="http://grml.in/">GREMLIN.JS</a>, <a href="https://www.npmjs.org/package/tape">TAPE</a></p>
 
 <p>You are able to take a Screenshot of the current web page too. This is possible with the <a href="http://html2canvas.hertzen.com/documentation.html">html2canvas</a> library.</p>
 
@@ -137,7 +141,7 @@ cd uiconsole
 &lt;script&gt;
 if(typeof io != 'undefined'){
     var socket = io.connect('http://&lt;your_ip&gt;:8080');
-    socket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('connect', {data: navigator.userAgent});});
+    socket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('client_connect', {data: navigator.userAgent});});
     socket.on('jscmd', function(data){try{eval(data.cmd);}catch(error){console.log(error);}});
 }
 &lt;/script&gt;
