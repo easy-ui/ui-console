@@ -376,6 +376,8 @@
             $cmd.append(addTest(tpl,'Refresh', 'window.location.reload();'));
             $cmd.append('<hr>');
             $cmd.append(addTest(tpl,'Text to speech', 'var msg = new SpeechSynthesisUtterance(\'Hello World\');window.speechSynthesis.speak(msg);'));
+
+            /*
             $cmd.append('<hr>');
             $cmd.append(addTest(tpl,'Login', '$("#authentication-panel-form-login").val("Testdev0008");\n$("#authentication-panel-form-password").val("Testdev0008");\n$("#authentication-panel-pinksquare").trigger("click");'));
             $cmd.append('<hr>');
@@ -395,6 +397,7 @@
             $cmd.append('<hr>');
             $cmd.append(addTest(tpl,'Logout', '$("#header-status-infos-logout").trigger("click");$(".modal-buttons-ok").trigger("click");'));
             $cmd.append('<hr>');
+            */
             //$cmd.append(addTest(tpl,'', ''));
             $cmd.hide();
             $console.hide();
@@ -495,6 +498,13 @@
         } else {
 
             $(".list-group-item[data-id=" + current_socketid +"]").css('background-color','#DFF0D8');
+        }
+
+        console.log("index:"+index);
+        if(index<=0){
+            $("#browserListPanel").hide();
+        } else {
+            $("#browserListPanel").show();
         }
 
         $('#browserList').mixItUp();
