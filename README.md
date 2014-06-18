@@ -5,6 +5,9 @@
 Versions
 =========
 
+**v 0.1.8 - 2014/06/18**
+* Add TAP support example with Broserify
+
 **v 0.1.5 - 2014/06/18**
 
 * Convert project to socket.io 1.0.4
@@ -20,7 +23,7 @@ Versions
 * Bug fix, and is completly functional.
 
 
-**ui-console**
+**ui-console the web console**
 ==========
 
 Web developer tools for testing, scripting and debugging on remote
@@ -92,7 +95,7 @@ Usage
         <script>
         if(typeof io != 'undefined'){
             var socket = io.connect('http://<your_ip>:8080');
-            socket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('connect', {data: navigator.userAgent});});
+            socket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('client_connect', {data: navigator.userAgent});});
             socket.on('jscmd', function(data){try{eval(data.cmd);}catch(error){console.log(error);}});
         }
         </script>

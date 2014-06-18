@@ -1,6 +1,6 @@
 {
   "name": "uiconsole",
-  "version": "0.1.5",
+  "version": "0.1.9",
   "description": "Web developer tools for testing, scripting and debugging on remote devices.",
   "author": "easy-ui <npm.uiconsole@gmail.com>",
   "homepage": "http://easy-ui.github.io/ui-console",
@@ -22,7 +22,7 @@
         "ui"
   ],
   "dependencies": {
-        "socket.io": "~1.0.0",
+        "socket.io": "1.0.4",
         "log-color": "~1.0.0",
         "weinre": "~2.0.0-pre-HH0SN197",
         "browserify": "~3.44.2",

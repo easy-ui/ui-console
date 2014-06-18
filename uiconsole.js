@@ -55,7 +55,8 @@ function convertUiconsole() {
 
             db.run('INSERT INTO ui_users (userName, password) VALUES ("'+addUserName+'", "'+addUserPass+'")');
 
-            console.log("User '"+addUserName+"' added !");
+            //console.log("User '"+addUserName+"' added !");
+            log.info("User '"+addUserName+"' added !");
 
             process.exit(0);
 
@@ -66,7 +67,8 @@ function convertUiconsole() {
 
             db.run('UPDATE ui_users SET password = "'+newPass+'" WHERE userName = "admin" AND password = "'+oldPass+'"');
 
-            console.log("Admin password updated !");
+            //console.log("Admin password updated !");
+            log.info("Admin password updated !");
 
             process.exit(0);
 
@@ -78,7 +80,8 @@ function convertUiconsole() {
 
             db.run('UPDATE ui_users SET password = "'+newPass+'" WHERE userName = "'+updateUserName+'" AND password = "'+oldPass+'"');
 
-            console.log("User '"+updateUserName+"' password updated !");
+            //console.log("User '"+updateUserName+"' password updated !");
+            log.info("User '"+updateUserName+"' password updated !");
 
             process.exit(0);
 
@@ -89,7 +92,8 @@ function convertUiconsole() {
 
             db.run('DELETE FROM ui_users WHERE userName = "'+deleteUserName+'"');
 
-            console.log("User '"+deleteUserName+"' deleted !");
+            //console.log("User '"+deleteUserName+"' deleted !");
+            log.info("User '"+deleteUserName+"' deleted !");
 
             process.exit(0);
 
@@ -102,7 +106,8 @@ function convertUiconsole() {
                     console.log(err);
                     process.exit(0);
                 } else {
-                    console.log("JSON saved to " + outputFilename);
+                    //console.log("JSON saved to " + outputFilename);
+                    log.info("JSON saved to " + outputFilename);
                     process.exit(0);
                 }
             });
@@ -117,7 +122,14 @@ function convertUiconsole() {
                 /**/
                     db.run('CREATE TABLE ui_connected (jsondata TEXT)');
                     db.run('CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT)');
-                    db.run('INSERT INTO ui_users (userName, password) VALUES ("admin", "password")');
+                    db.run('INSERT INTO ui_users (userName, password) VALUES ("admin", "password")',[], function(err){
+                        console.log("insert ok");
+                        console.log("result:"+err);
+                        process.exit(0);
+                    });
+
+
+
 
                 //}
 
@@ -147,7 +159,7 @@ function convertUiconsole() {
 
         confJSON = JSON.parse(data);
 
-        console.dir("Config file loaded successfully.");
+        log.notice("Config file loaded successfully.");
 
         runWeinre(confJSON);
     });
@@ -307,7 +319,8 @@ function convertUiconsole() {
             //browserList[socket.id] = data.data;
             browserList[socket.id] = clientData;
             socketList[socket.id] = socket;
-            io.emit('BrowserList', {list: browserList});
+            //io.emit('BrowserList', {list: browserList});
+            io.to(consoleSocket[0]).emit('BrowserList', {list: browserList});
             //io.sockets.connected[socket.id].emit('message', 'for your eyes only');
             /*
             if (io.sockets.connected[consoleSocket[0]]) {
@@ -340,12 +353,14 @@ function convertUiconsole() {
 
         socket.on('getBrowserList', function(){
             log.notice('SERVER socket.on: getBrowserList');
-            socket.emit('BrowserList', {list: browserList});
+            //socket.emit('BrowserList', {list: browserList});
+            io.to(consoleSocket[0]).emit('BrowserList', {list: browserList});
         });
 
         socket.on('handlers', function(data, callback){
             log.notice('SERVER socket.on: handlers:'+ data.data);
-            io.to(socketList[data.socketid].id).emit('handlers', {data: data});
+            //io.to(socketList[data.socketid].id).emit('handlers', {data: data});
+            io.to(consoleSocket[0]).emit('handlers', {data: data});
             /*
             if (io.sockets.connected[consoleSocket[0]]) {
                 io.sockets.connected(consoleSocket[0]).emit('handlers', {data: data});
@@ -367,7 +382,8 @@ function convertUiconsole() {
 
         socket.on('tape', function(data, callback){
             log.notice('SERVER socket.on: tape:'+ data.console);
-            io.to(socketList[data.socketid].id).emit('tape', {data: data});
+            //io.to(socketList[data.socketid].id).emit('tape', {data: data});
+            io.to(consoleSocket[0]).emit('tape', {data: data});
             /*
             if (io.sockets.connected[consoleSocket[0]]) {
                 io.sockets.connected(consoleSocket[0]).emit('tape', {data: data});

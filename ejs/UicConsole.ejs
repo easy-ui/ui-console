@@ -369,7 +369,7 @@
 
             $cmd.append(addTest(tpl,'Refresh', 'window.location.reload();'));
             $cmd.append('<hr>');
-            $cmd.append(addTest(tpl,'Get Event Handler', 'var msg = new SpeechSynthesisUtterance(\'Hello World\');window.speechSynthesis.speak(msg);'));
+            $cmd.append(addTest(tpl,'Text to speech', 'var msg = new SpeechSynthesisUtterance(\'Hello World\');window.speechSynthesis.speak(msg);'));
             $cmd.append('<hr>');
             $cmd.append(addTest(tpl,'Login', '$("#authentication-panel-form-login").val("Testdev0008");\n$("#authentication-panel-form-password").val("Testdev0008");\n$("#authentication-panel-pinksquare").trigger("click");'));
             $cmd.append('<hr>');
@@ -699,13 +699,13 @@
 
     $("#start-weinre").on("click", function (e) {
         e.preventDefault();
-        sendJS("var i = document.createElement('script');i.src = '"+_PROTOCOL+"://"+_HOST+":"+_WEINRE_PORT+"/target/target-script-min.js#manu';document.getElementsByTagName('body')[0].appendChild(i);");
-        window.open(""+_WEINRE_PROTOCOL+"://"+_HOST+":"+_WEINRE_PORT+"/client/#manu","_blank");
+        sendJS("var i = document.createElement('script');i.src = '"+_PROTOCOL+"://"+_HOST+":"+_WEINRE_PORT+"/target/target-script-min.js#uiconsole';document.getElementsByTagName('body')[0].appendChild(i);");
+        window.open(""+_WEINRE_PROTOCOL+"://"+_HOST+":"+_WEINRE_PORT+"/client/#uiconsole","_blank");
     });
 
     $("#btn-tape").on("click", function (e) {
         e.preventDefault();
-        sendJS("var i = document.createElement('script');i.src = '"+_PROTOCOL+"://"+_HOST+":"+_PORT+"/test/bundle.js';document.getElementsByTagName('body')[0].appendChild(i);");
+        sendJS("var i = document.createElement('script');i.src = '"+_PROTOCOL+"://"+_HOST+":"+_PORT+"/tap/bundle.js';document.getElementsByTagName('body')[0].appendChild(i);");
     });
 
 
