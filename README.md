@@ -5,14 +5,14 @@
 Versions
 =========
 
-**v 0.1.16 - 2014/06/19**
+**v 0.1.17 - 2014/06/19**
 * Update readme
 
 **v 0.1.14 - 2014/06/18**
 * Updating EJS views for better rendering
 
 **v 0.1.8 - 2014/06/18**
-* Add TAP support example with Broserify
+* Add TAP support example with Browserify
 
 **v 0.1.5 - 2014/06/18**
 
