@@ -5,6 +5,9 @@
 Versions
 =========
 
+**v 0.1.15 - 2014/06/18**
+* Update readme
+
 **v 0.1.14 - 2014/06/18**
 * Updating EJS views for better rendering
 
@@ -66,7 +69,7 @@ Usage
  
         uiconsole init
         
- - Setup your server parameters in _conf.json
+ - Setup your server parameters in `_conf.json`
         
         {
             "host": "192.168.2.136",
@@ -103,18 +106,15 @@ Usage
         }
         </script>
         
- - Soon I plan to incorporate the use of a bookmarklet target like this.:
- 
-        javascript:(function(e){e.setAttribute("src","http://<your_ip>:8080/socket.io/socket.io.js");document.getElementsByTagName("body")[0].appendChild(e);})(document.createElement("script"));void(0);
-    
+   
 Weinre
 =====
 
  - If you want to use 'weinre' you must click the button weinre "JSCONSOLE".
    This will inject the script server connection in your target web page.
-   As the server is already started on the 8282 port, your target page will be displayed in the web interface weinre.
+   As the server is already started on the port defined in `_conf.json`, your target page will be displayed in the web interface weinre.
    
-   Now injection is dynamic with the IP address of your server. See _conf.json `weinreHost`
+   Now injection is dynamic with the IP address of your server. See _conf.json `weinreHost` parameter.
 
 
  - Open your browser for access to the `weinre`.
