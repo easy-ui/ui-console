@@ -2,39 +2,6 @@
 [![NPM version](https://badge.fury.io/js/uiconsole.svg)](http://badge.fury.io/js/uiconsole)
 [![Gittip](http://img.shields.io/gittip/easy-ui.svg)](https://www.gittip.com/easy-ui/)
 
-Versions
-=========
-
-**v 0.1.19 - 2014/06/20**
-* Add new feature. Custom javascript command ! See readme about `initCustomJS`
-
-**v 0.1.18 - 2014/06/20**
-* Make better log rendering
-* Code refactoring
-
-**v 0.1.17 - 2014/06/19**
-* Update readme
-
-**v 0.1.14 - 2014/06/18**
-* Updating EJS views for better rendering
-
-**v 0.1.8 - 2014/06/18**
-* Add TAP support example with Browserify
-
-**v 0.1.5 - 2014/06/18**
-
-* Convert project to socket.io 1.0.4
-* Fix bug on screenshot
-
-**v 0.1.4 - 2014/06/17**
-
-* Convert project to socket.io 1.0.0
-* Not completly functional.
-
-**v 0.1.0 - 2014/06/17**
-
-* Bug fix, and is completly functional.
-
 
 **ui-console the web console**
 ==========
@@ -183,4 +150,40 @@ Schematic database.
 
         CREATE TABLE ui_connected (jsondata TEXT);
         CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT);
-        
+
+
+Versions
+=========
+
+**v 0.1.21 - 2014/06/20**
+* Fix bug on custom javascript command.
+
+**v 0.1.19 - 2014/06/20**
+* Add new feature. Custom javascript command ! See readme about `initCustomJS`
+
+**v 0.1.18 - 2014/06/20**
+* Make better log rendering
+* Code refactoring
+
+**v 0.1.17 - 2014/06/19**
+* Update readme
+
+**v 0.1.14 - 2014/06/18**
+* Updating EJS views for better rendering
+
+**v 0.1.8 - 2014/06/18**
+* Add TAP support example with Browserify
+
+**v 0.1.5 - 2014/06/18**
+
+* Convert project to socket.io 1.0.4
+* Fix bug on screenshot
+
+**v 0.1.4 - 2014/06/17**
+
+* Convert project to socket.io 1.0.0
+* Not completly functional.
+
+**v 0.1.0 - 2014/06/17**
+
+* Bug fix, and is completly functional.

@@ -146,7 +146,7 @@ function convertUiconsole() {
     // Load configuration file `_conf.json`
     fs.readFile(confJsonFileName, 'utf8', function (err, data) {
         if (err) {
-            console.log('There no config file! Please try to generate again. `uiconsole init` then edit '+confJsonFileName+' with your parameters.');
+            log.error('There no config file! Please try to generate again. `uiconsole init` then edit '+confJsonFileName+' with your parameters.');
             process.exit(0);
         }
 
@@ -155,6 +155,19 @@ function convertUiconsole() {
         log.notice("Config file loaded successfully.");
 
         runWeinre(confJSON);
+    });
+
+    // Load configuration file `_customJS.json`
+    fs.readFile(confCustomJSFileName, 'utf8', function (err, data) {
+        if (err) {
+            log.error('There no custom javascript command file! Please try to generate again. `uiconsole initCustomJS` then edit '+confCustomJSFileName+' with your custom javascript command.');
+            process.exit(0);
+        }
+
+        customJS = JSON.parse(data);
+
+        log.notice("Custom javascript command file loaded successfully.");
+
     });
 
     // Get client IP address from request object
