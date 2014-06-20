@@ -21,9 +21,9 @@ function convertUiconsole() {
         },
         */
         app             = module.exports = express(),
-    //port            = process.env.PORT || 443,
+        //port            = process.env.PORT || 443,
         port            = process.env.PORT || 8080,
-    //server          = https.createServer(options, app).listen(port),
+        //server          = https.createServer(options, app).listen(port),
         server          = http.createServer(app).listen(port),
         io              = require('socket.io')(server),
         Log 		    = require('log-color'),
@@ -40,10 +40,9 @@ function convertUiconsole() {
             weinrePort: '8282'
         };
 
-
-
-
-
+    // -----------------------------------------------------------------------------------------------------------------
+    // Command line options --------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     if(process.argv.length > 2) {
 
         var command_type = process.argv[2];
@@ -54,10 +53,7 @@ function convertUiconsole() {
             var addUserPass = process.argv[4];
 
             db.run('INSERT INTO ui_users (userName, password) VALUES ("'+addUserName+'", "'+addUserPass+'")');
-
-            //console.log("User '"+addUserName+"' added !");
-            log.info("User '"+addUserName+"' added !");
-
+            log.warning("User '"+addUserName+"' added !");
             process.exit(0);
 
         } else if(command_type == "updateAdminPassword") {
@@ -66,10 +62,7 @@ function convertUiconsole() {
             var newPass = process.argv[4];
 
             db.run('UPDATE ui_users SET password = "'+newPass+'" WHERE userName = "admin" AND password = "'+oldPass+'"');
-
-            //console.log("Admin password updated !");
-            log.info("Admin password updated !");
-
+            log.warning("Admin password updated !");
             process.exit(0);
 
         } else if(command_type == "updateUserPassword") {
@@ -79,22 +72,14 @@ function convertUiconsole() {
             var newPass = process.argv[5];
 
             db.run('UPDATE ui_users SET password = "'+newPass+'" WHERE userName = "'+updateUserName+'" AND password = "'+oldPass+'"');
-
-            //console.log("User '"+updateUserName+"' password updated !");
-            log.info("User '"+updateUserName+"' password updated !");
-
+            log.warning("User '"+updateUserName+"' password updated !");
             process.exit(0);
-
 
         } else if(command_type == "deleteUser") {
 
             var deleteUserName = process.argv[3];
-
             db.run('DELETE FROM ui_users WHERE userName = "'+deleteUserName+'"');
-
-            //console.log("User '"+deleteUserName+"' deleted !");
-            log.info("User '"+deleteUserName+"' deleted !");
-
+            log.warning("User '"+deleteUserName+"' deleted !");
             process.exit(0);
 
         } else if(command_type == "init") {
@@ -106,49 +91,29 @@ function convertUiconsole() {
                     console.log(err);
                     process.exit(0);
                 } else {
-                    //console.log("JSON saved to " + outputFilename);
-                    log.info("JSON saved to " + outputFilename);
+                    log.warning("JSON saved to " + outputFilename);
                     process.exit(0);
                 }
             });
 
         } else if(command_type == "initdb") {
 
-            // Doc SQL : http://sql.sh/cours/
-            // Sqlite3 database initialization
-            log.notice("Populate Database tables");
+            log.notice("Populate Database tables and data.");
             db.serialize(function() {
-                //if(!exists) {
-                /**/
-                    db.run('CREATE TABLE ui_connected (jsondata TEXT)');
-                    db.run('CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT)');
-                    db.run('INSERT INTO ui_users (userName, password) VALUES ("admin", "password")',[], function(err){
-                        console.log("insert ok");
-                        console.log("result:"+err);
-                        process.exit(0);
-                    });
-
-
-
-
-                //}
-
-
+                db.run('CREATE TABLE ui_connected (jsondata TEXT)');
+                db.run('CREATE TABLE ui_users (userName TEXT, password TEXT, lastconnected TEXT)');
+                db.run('INSERT INTO ui_users (userName, password) VALUES ("admin", "password")',[], function(err){
+                    console.log("insert ok");
+                    console.log("result:"+err);
+                    process.exit(0);
+                });
             });
 
-            //process.exit(0);
-
         } else {
-
-            console.log("Command not found. Please read the README <https://www.npmjs.org/package/uiconsole> for more help.");
-
+            log.error("Command not found. Please read the README <https://www.npmjs.org/package/uiconsole> for more help.");
             process.exit(0);
-
         }
     }
-
-// create our router
-//var router = express.Router();
 
     // Load configuration file `_conf.json`
     fs.readFile(confJsonFileName, 'utf8', function (err, data) {
@@ -164,8 +129,7 @@ function convertUiconsole() {
         runWeinre(confJSON);
     });
 
-
-// Get client IP address from request object ----------------------
+    // Get client IP address from request object
     var getClientAddress = function (req) {
         return (req.headers['x-forwarded-for'] || '').split(',')[0]
             || req.connection.remoteAddress;
@@ -174,33 +138,33 @@ function convertUiconsole() {
     var runWeinre = function(confJSON){
 
         log.notice("START WEINRE SERVER " + confJSON.weinreHost + ":" + confJSON.weinrePort);
+
         exec('weinre -boundHost '+confJSON.weinreHost+' -httpPort '+confJSON.weinrePort+' -verbose true', function(err, stdout, stderr) {
             console.log(stdout);
         });
 
+        log.info("Open your browser with this url http://" + confJSON.host + ":" + confJSON.port + " for accessing to the admin panel.");
     };
 
-
-
-// Webserver config
+    // -----------------------------------------------------------------------------------------------------------------
+    // Express ---------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     log.notice("Webserver Express initialization");
-// Express config
-// Define current web path
-// Define current rendering engine (ejs)
+
     app.use(express.static(__dirname + '/'));
     app.set('views', __dirname + '/');
     app.set('view engine', 'ejs');
     app.engine('html', require('ejs').renderFile);
 
-// Express middleware
+    // Express middleware
     app.use(cookieParser());
-    app.use(expressSession({secret:'somesecrettokenhere'}));
+    app.use(expressSession({secret:'astalavistababy'}));
     app.use(bodyParser());
 
-// Permet de connaitre l ip du client
+    // Allows to know the client ip
     app.enable('trust proxy');
 
-// Session-persisted message middleware
+    // Session-persisted message middleware
     app.use(function(req, res, next){
         var err = req.session.error;
         var msg = req.session.success;
@@ -213,8 +177,13 @@ function convertUiconsole() {
         next();
     });
 
-
-// Routes
+    // -----------------------------------------------------------------------------------------------------------------
+    // Routes ----------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    /**
+     * @todo: Convert routes with Router method.
+     * see: var router = express.Router();
+     * */
     app.get('/', function(req, res) {
 
         if(req.session.userName == undefined){
@@ -231,8 +200,6 @@ function convertUiconsole() {
         }
     });
 
-// Set Express REST Services
-// https://192.168.2.136/connected/Chrome
     app.get('/connected/:browser', function(req, res) {
 
         var sql = "SELECT rowid AS id, jsondata FROM ui_connected WHERE jsondata LIKE '%"+req.params.browser+"%'";
@@ -252,18 +219,14 @@ function convertUiconsole() {
         });
     });
 
-// http://runnable.com/U227vQJ-m3YpYDuC/nodejs%2Bcookie%2Bsession-for-node-js
     app.post('/login/', function(req, res) {
 
-        //console.log(req.body.userName);
-        //console.log(req.body.password);
-        //var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         var ip = getClientAddress(req);
-        console.log(ip);
+
+        //console.log(ip);
 
         // Connect to Database and check if user found
         var sql = "SELECT userName, password FROM ui_users WHERE userName = '"+req.body.userName+"' AND password = '"+req.body.password+"'";
-        //console.log(sql);
 
         db.get(sql, function(err, row) {
 
@@ -273,21 +236,19 @@ function convertUiconsole() {
                 req.session.success = 'Connected as ' + row.userName;
                 var lastConnected = Date();
                 db.run("UPDATE ui_users SET lastconnected = ? WHERE userName = ? AND password = ?", lastConnected, row.userName, row.password);
-                req.session.lastConnected = lastConnected; // utiliser avec le res.render('ejs/UicConsole', { userName: req.session.userName, lastConnected: req.session.lastConnected });
+                req.session.lastConnected = lastConnected; // Used with res.render('ejs/UicConsole', { userName: req.session.userName, lastConnected: req.session.lastConnected });
 
             } else {
-                // Sinon on renvoie user not found
+                // user not found
                 req.session.error = 'Authentication failed, please check your username and password.'
             }
             res.redirect('/');
         });
     });
 
-
-    // https://github.com/angular/angular-seed
-
-
-// Socket.io initialization
+    // -----------------------------------------------------------------------------------------------------------------
+    // Socket ----------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     log.notice("Socket.io ready");
     io.on('connection', function (socket) {
 
@@ -295,156 +256,78 @@ function convertUiconsole() {
         var domainOrigin = socket.handshake.headers.referer;
         var connectionTime = socket.handshake.time;
 
-        console.log("------------------------------------------");
-        console.log("New connection from " + address.address + ":" + address.port);
-        console.log("Domain Origin " + domainOrigin);
-        //console.log(socket.handshake);
-        console.log("------------------------------------------");
+        log.warning("New connection from " + address.address + ":" + address.port + " - Domain Origin " + domainOrigin);
 
-
-        // insert handshake on sqlite3 database
+        /**
+         * @todo: Put in separate function
+         * */
         var stmt = db.prepare("INSERT INTO ui_connected (jsondata) VALUES (?)");
         stmt.run( JSON.stringify( socket.handshake ));
         stmt.finalize();
 
         socket.on('client_connect', function(data, callback){
-            log.notice('SERVER socket.on: connect data.data:'+ data.data);
-            log.notice('SERVER socket.on: connect socket.id:'+ socket.id);
-            log.notice("Domain Origin " + domainOrigin);
+            log.debug('SERVER socket.on: connect data.data:'+ data.data);
+            log.debug('SERVER socket.on: connect socket.id:'+ socket.id);
+            log.debug("Domain Origin " + domainOrigin);
             var clientData = new Object();
             clientData.data = data.data;
             clientData.origin = domainOrigin;
             clientData.time = connectionTime;
-
-            //browserList[socket.id] = data.data;
             browserList[socket.id] = clientData;
             socketList[socket.id] = socket;
-            //io.emit('BrowserList', {list: browserList});
             io.to(consoleSocket[0]).emit('BrowserList', {list: browserList});
-            //io.sockets.connected[socket.id].emit('message', 'for your eyes only');
-            /*
-            if (io.sockets.connected[consoleSocket[0]]) {
-                io.sockets.connected(consoleSocket[0]).emit('BrowserList', {list: browserList});
-            }*/
         });
 
         socket.on('imconsole', function(data, callback){
-            log.notice('SERVER socket.on: imconsole:'+ JSON.stringify(data));
+            log.debug('SERVER socket.on: imconsole:'+ JSON.stringify(data));
             consoleSocket[0] = data.data;
-            log.notice('SERVER socket.on: consoleSocket:'+ consoleSocket[0]);
+            log.debug('SERVER socket.on: consoleSocket:'+ consoleSocket[0]);
         });
 
         socket.on('jscmd', function(data){
-            log.notice('SERVER socket.on: jscmd');
+            log.debug('SERVER socket.on: jscmd');
             socket.broadcast.emit('jscmd', {cmd: data});
         });
 
         socket.on('jscmdto', function(data){
-            log.notice('SERVER socket.on: jscmdto');
-            log.notice('SERVER socket.on: jscmdto:'+data.socketid);
-            log.notice('SERVER socket.on: jscmdto:'+socketList[data.socketid].id);
+            log.debug('SERVER socket.on: jscmdto');
+            log.debug('SERVER socket.on: jscmdto:'+data.socketid);
+            log.debug('SERVER socket.on: jscmdto:'+socketList[data.socketid].id);
             io.to(socketList[data.socketid].id).emit('jscmd', {cmd: data.cmd});
-            /*
-            if (io.sockets.connected[socketList[data.socketid].id]) {
-                io.sockets.connected(socketList[data.socketid].id).emit('jscmd', {cmd: data.cmd});
-            }
-            */
         });
 
         socket.on('getBrowserList', function(){
-            log.notice('SERVER socket.on: getBrowserList');
-            //socket.emit('BrowserList', {list: browserList});
+            log.debug('SERVER socket.on: getBrowserList');
             io.to(consoleSocket[0]).emit('BrowserList', {list: browserList});
         });
 
         socket.on('handlers', function(data, callback){
-            log.notice('SERVER socket.on: handlers:'+ data.data);
-            //io.to(socketList[data.socketid].id).emit('handlers', {data: data});
+            log.debug('SERVER socket.on: handlers:'+ data.data);
             io.to(consoleSocket[0]).emit('handlers', {data: data});
-            /*
-            if (io.sockets.connected[consoleSocket[0]]) {
-                io.sockets.connected(consoleSocket[0]).emit('handlers', {data: data});
-            }
-            */
         });
 
         socket.on('screenshot', function(data, callback){
-            log.notice('SERVER socket.on: screenshot:'+ data.data);
-            console.dir("id: "+socket);
+            log.debug('SERVER socket.on: screenshot:'+ data.data);
             io.to(consoleSocket[0]).emit('screenshot', {data: data});
-
-            /*
-            if (io.sockets.connected[consoleSocket[0]]) {
-                io.sockets.connected(consoleSocket[0]).emit('screenshot', {data: data});
-            }
-            */
         });
 
         socket.on('tape', function(data, callback){
-            log.notice('SERVER socket.on: tape:'+ data.console);
-            //io.to(socketList[data.socketid].id).emit('tape', {data: data});
+            log.debug('SERVER socket.on: tape:'+ data.console);
             io.to(consoleSocket[0]).emit('tape', {data: data});
-            /*
-            if (io.sockets.connected[consoleSocket[0]]) {
-                io.sockets.connected(consoleSocket[0]).emit('tape', {data: data});
-            }
-            */
         });
 
         socket.on('disconnect', function(){
-            log.notice('socket.on: disconnect');
+            log.warning('socket.on: disconnect');
             disconnect(socket);
         });
-
-
-
-        /*
-         * // send to current request socket client
-         socket.emit('message', "this is a test");
-
-         // sending to all clients, include sender
-         io.sockets.emit('message', "this is a test");
-
-         // sending to all clients except sender
-         socket.broadcast.emit('message', "this is a test");
-
-         // sending to all clients in 'game' room(channel) except sender
-         socket.broadcast.to('game').emit('message', 'nice game');
-
-         // sending to all clients in 'game' room(channel), include sender
-         io.sockets.in('game').emit('message', 'cool game');
-
-         // sending to individual socketid
-         io.sockets.socket(socketid).emit('message', 'for your eyes only');
-         * */
-
-
-
     });
 
     function disconnect(socket){
-        // get a list of rooms for the client
-        //var rooms = io.sockets.manager.roomClients[socket.id];
 
-        // unsubscribe from the rooms
-        /*
-        for(var room in rooms){
-            if(room && rooms[room]){
-                //unsubscribe(socket, { room: room.replace('/','') });
-                socket.leave(room.replace('/',''));
-            }
-        }
-        */
         socket.leave('');
-
-        // client was unsubscribed from the rooms,
-        // now we can selete him from the hash object
         delete browserList[socket.id];
-        //io.sockets.emit('BrowserList', {list: browserList}); // 0.9.6
-        io.emit('BrowserList', {list: browserList}); // 1.0.0
-        // Disconnect socket
-        log.notice('socket.disconnect');
-        //socket.disconnect()
+        io.emit('BrowserList', {list: browserList});
+        log.warning('socket.disconnect');
     }
 }
 

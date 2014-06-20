@@ -5,6 +5,10 @@
 Versions
 =========
 
+**v 0.1.18 - 2014/06/20**
+* Make better log rendering
+* Code refactoring
+
 **v 0.1.17 - 2014/06/19**
 * Update readme
 
