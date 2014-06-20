@@ -10,4 +10,5 @@ uidb.sql
 start-weinre.bat
 photo.png
 openshift.txt
-
+bin/_conf.js
+bin/uidb.db
