@@ -8,28 +8,16 @@
     <style>
         pre {margin: 10px 0 20px 0;}
         pre:hover{background: #00a3ff; color: #ffffff;cursor: pointer;}
-        legend{font-size: 20px; font-weight: bold;}
+        legend{font-size: 14px; font-weight: bold; border-style:none; margin-bottom:0;}
         #cmd{overflow: auto;}
-        .console{
-            height: 360px;
-            overflow: auto;
-            background-color: #F5F5F5;
-            border: 1px solid #CCCCCC;
-            border-radius: 4px;
-            color: #333333;
-        }
+        .console{ height: 360px; overflow: auto; background-color: #F5F5F5; border: 1px solid #CCCCCC; border-radius: 4px; color: #333333;}
         #main-console {width: 75%}
         .list-group-item img{margin: 2px 5px 2px 2px; padding: 0;}
         #console-log{height: 230px;margin: 20px 0 0;overflow: auto;}
         #browserList .mix{ display: none;}
         #browserList .blist{margin: 0px;}
-        .navbar {
-            border-radius: 0px;
-        }
-        .container p{
-            color: #000000;
-            font-size: 10px;
-        }
+        .navbar {border-radius: 0px;}
+        .container p{color: #000000; font-size: 10px;}
         #browserListPanel{display: none;}
     </style>
 </head>
@@ -50,29 +38,9 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">UICore <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="http://uicore1.m2msolution.dev/" target="_blank">UICore1</a></li>
-                        <li><a href="http://uicore2.m2msolution.dev/" target="_blank">UICore2</a></li>
-                        <li><a href="http://uicore3.m2msolution.dev/" target="_blank">UICore3</a></li>
-                        <li class="divider"></li>
-                    </ul>
-                </li>
-            </ul>
-            <!--
-            <form class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>
-            -->
 
             <ul class="nav navbar-nav navbar-right">
                 <a href="/logout/" class="btn btn-danger navbar-btn"><span class="glyphicon glyphicon-remove"></span> Logout</a>
-
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -115,6 +83,10 @@
         <textarea id="uiconsoleSocketJS" style="width: 100%; height: 150px;"></textarea>
     </div>
 
+
+    <div id="ejsdebug" class="alert alert-warning"></div>
+
+
     <div class="row">
 
         <div id="browserListPanel" class="col-xs-6 col-md-3">
@@ -126,7 +98,7 @@
                 <div class="btn btn-info filter" data-filter=".tablet">Tablet</div>
                 <div class="btn btn-info filter" data-filter=".mobile">Mobile</div>
             </div>
-
+            <!--
             <h3>Order</h3>
             <div class="btn-group">
                 <div class="btn btn-info sort" data-sort="browser:asc"><div style="font-size: 10px;">Browser</div> <span class="glyphicon glyphicon-chevron-up"></span></div>
@@ -147,11 +119,11 @@
                 <div class="btn btn-info sort" data-sort="my-order:asc"><span class="glyphicon glyphicon-chevron-up"></span></div>
                 <div class="btn btn-info sort" data-sort="my-order:desc"><span class="glyphicon glyphicon-chevron-down"></span></div>
             </div>
-
+            -->
             <h3>Connected</h3>
             <div id="browserList"></div>
 
-            <div id="btn-senstoall" class="btn btn-success" style="margin: 20px 0 0 0;">Run on all devices <span class="glyphicon glyphicon-play"></span></div>
+            <div id="btn-senstoall" class="btn btn-success" style="margin: 20px 0 0 0;">Use all connected clients <span class="glyphicon glyphicon-play"></span></div>
 
         </div>
 
@@ -233,10 +205,6 @@
 
 <script src="http://<%- host %>:<%- port %>/socket.io/socket.io.js"></script>
 <script>
-// TTS see : http://www.masswerk.at/mespeak/
-
-// Multi touch : http://rawgit.com/EightMedia/hammer.js/master/tests/manual/events.html
-// https://github.com/EightMedia/hammer.js/tree/1.1.2/
     if(typeof io != 'undefined'){
         var socket = io.connect('http://<%- host %>:<%- port %>');
     }
@@ -368,43 +336,22 @@
             tpl += '<pre class="jscode">{js}</pre>';
         tpl += '</fieldset>';
 
-       var $cmd = $("#cmd");
-       var $console = $(".console");
-       var $browserList = $("#browserList");
+    var $cmd = $("#cmd");
+    var $console = $(".console");
+    var $browserList = $("#browserList");
+    var customJS =<%-JSON.stringify(customJS)%>
+    $("#ejsdebug").hide();
 
+    for(var i=0;i<customJS.customJS.length;i++){
+        $cmd.append(addTest(tpl,customJS.customJS[i].label, customJS.customJS[i].cmd));
+    }
 
-            $cmd.append(addTest(tpl,'Refresh', 'window.location.reload();'));
-            $cmd.append('<hr>');
-            $cmd.append(addTest(tpl,'Text to speech', 'var msg = new SpeechSynthesisUtterance(\'Hello World\');window.speechSynthesis.speak(msg);'));
+    $cmd.hide();
+    $console.hide();
 
-            /*
-            $cmd.append('<hr>');
-            $cmd.append(addTest(tpl,'Login', '$("#authentication-panel-form-login").val("Testdev0008");\n$("#authentication-panel-form-password").val("Testdev0008");\n$("#authentication-panel-pinksquare").trigger("click");'));
-            $cmd.append('<hr>');
-            $cmd.append(addTest(tpl,'Mode Partiel', '$(".dashboard-security-alarm-choice-custom").trigger("click");'));
-            $cmd.append(addTest(tpl,'Mode Total', '$(".dashboard-security-alarm-choice-on").trigger("click");'));
-            $cmd.append(addTest(tpl,'Mode OFF', '$(".dashboard-security-alarm-choice-off").trigger("click");'));
-            $cmd.append(addTest(tpl,'Start Video', '$("#dashboard-player-button-play").trigger("click");'));
-            $cmd.append(addTest(tpl,'Stop Video', '$("#camera-player-gprs-stop").trigger("click");'));
-            $cmd.append('<hr>');
-            $cmd.append(addTest(tpl,'Security',     '$("#header-security").trigger("click");'));
-            $cmd.append(addTest(tpl,'Camera',       '$("#header-camera").trigger("click");'));
-            $cmd.append(addTest(tpl,'Domotic',      '$("#header-domotic").trigger("click");'));
-            $cmd.append(addTest(tpl,'Scenario',     '$("#header-scenario").trigger("click");'));
-            $cmd.append(addTest(tpl,'history',      '$("#header-history").trigger("click");'));
-            $cmd.append(addTest(tpl,'Setting',      '$("#header-setting").trigger("click");'));
-            $cmd.append(addTest(tpl,'Profile',      '$("#header-profile").trigger("click");'));
-            $cmd.append('<hr>');
-            $cmd.append(addTest(tpl,'Logout', '$("#header-status-infos-logout").trigger("click");$(".modal-buttons-ok").trigger("click");'));
-            $cmd.append('<hr>');
-            */
-            //$cmd.append(addTest(tpl,'', ''));
-            $cmd.hide();
-            $console.hide();
-
-// ---------------------------------------------------------------------------------------------------------------------
-// FUNCTION ------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // FUNCTION --------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
 
     function addTest(tpl,title,js){
 
@@ -527,9 +474,9 @@
         }
     }
 
-// ---------------------------------------------------------------------------------------------------------------------
-// SOCKET --------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // SOCKET ----------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
 
     if(typeof io != 'undefined') {
 
@@ -616,9 +563,9 @@
         });
     }
 
-// ---------------------------------------------------------------------------------------------------------------------
-// EVENT ---------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // EVENT -----------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
 
     $("#browserList").on("click", '.run', function (e) {
         e.preventDefault();
@@ -756,71 +703,3 @@ $( document ).ready(function() {
 </script>
 </body>
 </html>
-
-<!--
-
-
-
-<script src="http://192.168.2.136:8080/socket.io/socket.io.js"></script>
-<script>
-    if(typeof io != 'undefined'){
-        var socket = io.connect('http://192.168.2.136:8080');
-        socket.on('connect', function(){console.log('CLIENT socket.on: connect');socket.emit('connect', {data: navigator.userAgent});});
-        socket.on('jscmd', function(data){try{eval(data.cmd);}catch(error){console.log(error);}});
-    }
-
-</script>
-
-
-
-<script>
-    (function($) {
-        $.eventReport = function(selector, root) {
-            var s = [];
-            $(selector || '*', root).addBack().each(function() {
-                // the following line is the only change
-                var e = $._data(this, 'events');
-                if(!e) return;
-                s.push(this.tagName);
-                if(this.id) s.push('#', this.id);
-                if(this.className) s.push('.', this.className.replace(/ +/g, '.'));
-                for(var p in e) {
-                    var r = e[p],
-                            h = r.length - r.delegateCount;
-                    if(h)
-                        s.push('\n', h, ' ', p, ' handler', h > 1 ? 's' : '');
-                    if(r.delegateCount) {
-                        for(var q = 0; q < r.length; q++)
-                            if(r[q].selector) s.push('\n', p, ' for ', r[q].selector);
-                    }
-                }
-                s.push('\n\n');
-            });
-            return s.join('');
-        }
-        $.fn.eventReport = function(selector) {
-            return $.eventReport(selector, this);
-        }
-    })(jQuery);
-
-
-
-    // all events
-    //console.log($.eventReport());
-
-    // just events on inputs
-    //console.log($.eventReport('input'));
-
-    // just events assigned to this element
-    //console.log($.eventReport('#myelement'));
-
-    // events assigned to inputs in this element
-    //console.log($.eventReport('input', '#myelement'));
-    //console.log($('#myelement').eventReport('input')); // same result
-
-    // just events assigned to this element's children
-    //console.log($('#myelement').eventReport());
-    //console.log($.eventReport('*', '#myelement'); // same result
-
-</script>
--->

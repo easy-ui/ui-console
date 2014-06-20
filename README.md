@@ -5,6 +5,9 @@
 Versions
 =========
 
+**v 0.1.19 - 2014/06/20**
+* Add new feature. Custom javascript command ! See readme about `initCustomJS`
+
 **v 0.1.18 - 2014/06/20**
 * Make better log rendering
 * Code refactoring
@@ -87,6 +90,14 @@ Usage
         uiconsole initdb
         
  - A small SQLite database is created for user management. The default account is `admin` for the User name and `password` for password.
+
+
+ - If you want to use your custom javascript command.
+        
+        uiconsole initCustomJS
+        
+ - Setup your custom javascript command parameters in `_customJS.json`. Set a `label` and `cmd`. Respect JSON format data. 
+        
 
  - Start 'uiconsole' and a web server and a socket server run on port 8080.
  

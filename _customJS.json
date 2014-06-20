@@ -1,0 +1,12 @@
+{
+    "customJS": [
+        {
+            "label": "Refresh",
+            "cmd": "window.location.reload();"
+        },
+        {
+            "label": "Chrome Text to speech",
+            "cmd": "var msg = new SpeechSynthesisUtterance('Hello World');window.speechSynthesis.speak(msg);"
+        }
+    ]
+}

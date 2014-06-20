@@ -34,10 +34,23 @@ function convertUiconsole() {
         exec            = require('child_process').exec,
         confJsonFileName = '_conf.json',
         confJSON = {
-            host:'127.0.0.1',
-            port:'8080',
+            host: '127.0.0.1',
+            port: '8080',
             weinreHost: '127.0.0.1',
             weinrePort: '8282'
+        },
+        confCustomJSFileName = '_customJS.json',
+        customJS = {
+            "customJS": [
+                {
+                    "label": "Refresh",
+                    "cmd": "window.location.reload();"
+                },
+                {
+                    "label": "Chrome Text to speech",
+                    "cmd": "var msg = new SpeechSynthesisUtterance(\'Hello World\');window.speechSynthesis.speak(msg);"
+                }
+            ]
         };
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -109,6 +122,21 @@ function convertUiconsole() {
                 });
             });
 
+        } else if(command_type == "initCustomJS") {
+
+            var outputFilename = confCustomJSFileName;
+
+            fs.writeFile(outputFilename, JSON.stringify(customJS, null, 4), function(err) {
+                if(err) {
+                    console.log(err);
+                    process.exit(0);
+                } else {
+                    log.warning("Your custom javascript command saved to " + outputFilename);
+                    process.exit(0);
+                }
+            });
+
+
         } else {
             log.error("Command not found. Please read the README <https://www.npmjs.org/package/uiconsole> for more help.");
             process.exit(0);
@@ -144,6 +172,13 @@ function convertUiconsole() {
         });
 
         log.info("Open your browser with this url http://" + confJSON.host + ":" + confJSON.port + " for accessing to the admin panel.");
+    };
+
+    // Database log connection
+    var logConnection = function(data){
+        var stmt = db.prepare("INSERT INTO ui_connected (jsondata) VALUES (?)");
+        stmt.run( JSON.stringify( data ));
+        stmt.finalize();
     };
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -195,7 +230,8 @@ function convertUiconsole() {
                 host: confJSON.host,
                 port: confJSON.port,
                 weinreHost: confJSON.weinreHost,
-                weinrePort: confJSON.weinrePort
+                weinrePort: confJSON.weinrePort,
+                customJS : customJS
             });
         }
     });
@@ -258,12 +294,7 @@ function convertUiconsole() {
 
         log.warning("New connection from " + address.address + ":" + address.port + " - Domain Origin " + domainOrigin);
 
-        /**
-         * @todo: Put in separate function
-         * */
-        var stmt = db.prepare("INSERT INTO ui_connected (jsondata) VALUES (?)");
-        stmt.run( JSON.stringify( socket.handshake ));
-        stmt.finalize();
+        logConnection(socket.handshake);
 
         socket.on('client_connect', function(data, callback){
             log.debug('SERVER socket.on: connect data.data:'+ data.data);
